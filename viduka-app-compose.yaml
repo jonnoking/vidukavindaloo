@@ -1,0 +1,11 @@
+version: '2'
+services:
+  go-web-app:
+    container_name: cloudjonno-letsencrypt
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: .
+    environment:
+      - VIRTUAL_HOST=jonnoking.com
+      - LETSENCRYPT_HOST=jonnoking.com
