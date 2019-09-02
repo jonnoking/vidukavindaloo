@@ -2,14 +2,15 @@
 
 ## Spec
 
-- [ ] Github repo
-- [ ] Go static website
+- [x] Github repo
+- [x] Go static website
 - [ ] clean architecture - medium post
 - [ ] ngrok localhost config
-- [ ] Deploy website to docker
-- [ ] Script docker deployment
-- [ ] letsencrypt https
+- [x] Deploy website to docker
+- [x] Script docker deployment
+- [x] letsencrypt https
 - [ ] DNS subdomain hosted on docker
+- [ ] Add logging to Go-www service
 - [ ] FPL - API working
 - [ ] FPL - get snapshot of team
 - [ ] FPL - get snapshot of each team in league

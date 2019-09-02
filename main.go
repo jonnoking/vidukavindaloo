@@ -80,6 +80,11 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, "./static/html/index.html")
 }
 
+// PingHandler Will serve default ping.html page
+func PingHandler(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "./static/html/ping.html")
+}
+
 func Start(cfg HttpServerConfig) *HttpServer {
 
 	_, cancel := context.WithCancel(context.Background())
@@ -88,10 +93,11 @@ func Start(cfg HttpServerConfig) *HttpServer {
 	router := mux.NewRouter()
 	router.HandleFunc("/", HomeHandler)
 	router.HandleFunc("/home", HomeHandler)
+	router.HandleFunc("/ping", PingHandler)
 	router.PathPrefix("/static/").Handler(http.StripPrefix("/static", http.FileServer(http.Dir("./static"))))
 
 	hostPolicy := func(ctx context.Context, host string) error {
-		allowedHost := "54apenwith.com"
+		allowedHost := "cloudjonno.com"
 		if host == allowedHost {
 			return nil
 		}

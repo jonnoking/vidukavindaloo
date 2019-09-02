@@ -4,7 +4,7 @@ services:
   nginx-proxy:
     restart: always
     image: jwilder/nginx-proxy
-    container_name: cloudjonno-ngnix-proxy
+    container_name: cloudjonno-nginx-proxy
     ports:
       - "80:80"
       - "443:443"
@@ -15,9 +15,13 @@ services:
       - "/etc/nginx/certs"
 
   letsencrypt-nginx-proxy-companion:
+    container_name: cloudjonno-letsencrypt-companion
     restart: always
     image: jrcs/letsencrypt-nginx-proxy-companion
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     volumes_from:
       - "nginx-proxy"
+    environment:
+      DEFAULT_EMAIL: jonno@jonnoking.com
+    

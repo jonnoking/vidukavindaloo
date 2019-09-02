@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  go-web-app:
+    container_name: vidukavindaloo-go-www
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: .
+    ports:
+      - "8112:8111"
