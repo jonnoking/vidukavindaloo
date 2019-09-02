@@ -22,6 +22,17 @@ type FPLLogin struct {
 	App         string `json:"app"`
 }
 
+type FPLCookie struct {
+	Name       string `json:"name"`
+	Value      string `json:"value"`
+	Path       string `json:"path"`
+	Domain     string `json:"domain"`
+	HttpOnly   bool   `json:"http_only"`
+	Secure     bool   `json:"secure"`
+	MaxAge     int    `json:"max_age"`
+	RawExpires string `json:"raw_expires"`
+}
+
 func loginFPL() {
 
 	loginURL := "https://users.premierleague.com/accounts/login/"
@@ -47,11 +58,8 @@ func loginFPL() {
 	r, _ := http.NewRequest(http.MethodPost, u.String(), strings.NewReader(data.Encode()))
 	r.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	r.Header.Add("Content-Length", strconv.Itoa(len(data.Encode())))
+	// required otherwise proxy will intercept request
 	r.Header.Add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:40.0) Gecko/20100101 Firefox/40.0'")
-	r.Header.Add("Connection", "keep-alive")
-	r.Header.Add("Accept", "*/*")
-	//r.Header.Add("Accept-Encoding", "gzip, deflate")
-	r.Header.Add("Cache-Control", "no-cache")
 
 	resp, respErr := client.Do(r)
 	check(respErr)
@@ -61,9 +69,6 @@ func loginFPL() {
 	if readErr != nil {
 		log.Fatal(readErr)
 	}
-
-	// zipReader, zErr := zip.NewReader(bytes.NewReader(byteValue), int64(len(byteValue)))
-	// check(zErr)
 
 	fErr := ioutil.WriteFile("./loginpage.html", byteValue, 0644)
 	check(fErr)
@@ -81,50 +86,77 @@ func loginFPL() {
 
 	log.Println("Number of cookies: ", len(resp.Cookies()))
 
-	log.Println("--- PRINTING COOKIES ---")
-	for _, cookie := range resp.Cookies() {
-		log.Printf(cookie.Name)
-		log.Println(cookie.Value)
-	}
+	d := resp.Cookies()
 
-	for _, h := range resp.Request.Cookies() {
-		log.Printf("%v - %v", h.Name, h.Value)
-	}
+	// c := []FPLCookie{}
+
+	// log.Println("--- PRINTING COOKIES ---")
+	// for _, cookie := range resp.Cookies() {
+	// 	log.Printf(cookie.Name)
+	// 	log.Println(cookie.Value)
+	// 	log.Println(cookie.Domain)
+	// 	cc := FPLCookie{
+	// 		Name:       cookie.Name,
+	// 		Value:      cookie.Value,
+	// 		Domain:     cookie.Domain,
+	// 		HttpOnly:   cookie.HttpOnly,
+	// 		MaxAge:     cookie.MaxAge,
+	// 		Path:       cookie.Path,
+	// 		RawExpires: cookie.RawExpires,
+	// 		Secure:     cookie.Secure,
+	// 	}
+	// 	c = append(c, cc)
+	// }
+
+	getMyTeam(d)
 }
 
-func login() {
+func getMyTeam(cookies []*http.Cookie) {
+	apiURL := "https://fantasy.premierleague.com/api/my-team/1759299/"
 
-	url := "https://users.premierleague.com/accounts/login"
-	//url := "https://fantasy.premierleague.com/api/my-team/1759299/"
-
-	fplClient := http.Client{
-		Timeout: time.Second * 5,
+	log.Println("--- PRINTING COOKIES AGAIN ---")
+	for _, cookie := range cookies {
+		log.Printf(cookie.Name)
+		log.Println(cookie.Value)
+		log.Println(cookie.Domain)
+		log.Println(cookie.Path)
+		log.Println(cookie.Secure)
+		log.Println(cookie.RawExpires)
 	}
-	req, rErr := http.NewRequest(http.MethodPost, url, nil)
-	check(rErr)
 
-	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-	req.Header.Add("password", "")
-	req.Header.Add("login", "jonno.king@gmail.com")
-	req.Header.Add("redirect_uri", "https://fantasy.premierleague.com/")
-	req.Header.Add("app", "plfpl-web")
+	client := &http.Client{}
+	r, _ := http.NewRequest(http.MethodGet, apiURL, nil)
+	for _, cookie := range cookies {
+		if cookie.Name != "elevate" {
+			r.AddCookie(cookie)
+			// r.AddCookie(&http.Cookie{
+			// 	Name:   cookie.Name,
+			// 	Value:  cookie.Value,
+			// 	Domain: cookie.Domain,
+			// 	Path:   cookie.Path,
+			// })
+		}
+	}
+	r.Header.Add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:40.0) Gecko/20100101 Firefox/40.0'")
 
-	res, resErr := fplClient.Do(req)
-	check(resErr)
+	resp, respErr := client.Do(r)
+	check(respErr)
 
-	byteValue, readErr := ioutil.ReadAll(res.Body)
+	defer resp.Body.Close()
+
+	if resp.StatusCode != 200 {
+		log.Panic("\nStatus Code: ", resp.StatusCode)
+		log.Println(resp.Status)
+		return
+	}
+
+	byteValue, readErr := ioutil.ReadAll(resp.Body)
 	if readErr != nil {
 		log.Fatal(readErr)
 	}
 
-	var result map[string]interface{}
-	json.Unmarshal([]byte(byteValue), &result)
-
-	log.Printf("%v - %v", res.StatusCode, res.Status)
-	log.Println(res.Cookies)
-	log.Println(res.Header)
-	log.Println(res.Body)
-	log.Print(result)
+	fErr := ioutil.WriteFile("./myteam.json", byteValue, 0644)
+	check(fErr)
 
 }
 
