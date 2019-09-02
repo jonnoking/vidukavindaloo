@@ -1,0 +1,46 @@
+{
+  "csrftoken": {
+    "name": "csrftoken",
+    "value": "7iGfIvrmQHExP6HSEIvleCEd5lwAqOZW3HpK4kg7eAYEa65ZrVdTdb5uTUpATxVF",
+    "path": "/",
+    "domain": "",
+    "http_only": false,
+    "secure": false,
+    "max_age": 31449600,
+    "raw_expires": "Mon, 31 Aug 2020 21:31:24 GMT",
+    "Acquired": "2019-09-02T21:31:24.335957Z"
+  },
+  "elevate": {
+    "name": "elevate",
+    "value": "AGrJhv2PKMfi:1i4tv2:ViiBgYDRD9vg9rPOyCzKOy4KTzM",
+    "path": "/",
+    "domain": "",
+    "http_only": true,
+    "secure": true,
+    "max_age": 10800,
+    "raw_expires": "Tue, 03 Sep 2019 00:31:24 GMT",
+    "Acquired": "2019-09-02T21:31:24.335957Z"
+  },
+  "pl_profile": {
+    "name": "pl_profile",
+    "value": "eyJzIjogIld6SXNNVGcyTWpFMFhROjFpNHR2MjpxWXQ2dTZFZGN0TWtPWWJkdnNReDdUVFIyelUiLCAidSI6IHsiaWQiOiAxODYyMTQsICJmbiI6ICJKb25hdGhhbiIsICJsbiI6ICJLaW5nIiwgImZjIjogMjF9fQ==",
+    "path": "/",
+    "domain": "premierleague.com",
+    "http_only": false,
+    "secure": true,
+    "max_age": 1209600,
+    "raw_expires": "Mon, 16 Sep 2019 21:31:24 GMT",
+    "Acquired": "2019-09-02T21:31:24.335957Z"
+  },
+  "sessionid": {
+    "name": "sessionid",
+    "value": "3ak3yjccu8655i353sjapfx7vybovdff",
+    "path": "/",
+    "domain": "",
+    "http_only": true,
+    "secure": false,
+    "max_age": 1209600,
+    "raw_expires": "Mon, 16 Sep 2019 21:31:24 GMT",
+    "Acquired": "2019-09-02T21:31:24.335957Z"
+  }
+}
