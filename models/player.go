@@ -2,63 +2,79 @@ package models
 
 import (
 	"fmt"
-	"time"
+	s "strings"
 )
 
+// FPLPlayers represents all players in the FPL
+type FPLPlayers struct {
+	Players map[int]FPLPlayer `mapstructure:"players"`
+}
+
+func (p *FPLPlayers) GetPlayerByFullName(fullname string) (FPLPlayer, error) {
+	var ret FPLPlayer
+
+	for _, player := range p.Players {
+		if s.ToLower(player.GetFullName()) == s.ToLower(fullname) {
+			return player, nil
+		}
+	}
+	return ret, fmt.Errorf("No player called %s found", fullname)
+}
+
 type FPLPlayer struct {
-	ChanceOfPlayingNextRound int       `json:"chance_of_playing_next_round"`
-	ChanceOfPlayingThisRound int       `json:"chance_of_playing_this_round"`
-	Code                     int       `json:"code"`
-	CostChangeEvent          int       `json:"cost_change_event"`
-	CostChnageFall           int       `json:"cost_change_event_fall"`
-	CostChangeStart          int       `json:"cost_change_start"`
-	CostChangeStartFall      int       `json:"cost_change_start_fall"`
-	DreamTeamCount           int       `json:"dreamteam_count"`
-	ElementType              int       `json:"element_type"`
-	EPNext                   float32   `json:"ep_next"`
-	EPThis                   float32   `json:"ep_this"`
-	EventPoints              int       `json:"event_points"`
-	FirstName                string    `json:"first_name"`
-	Form                     float32   `json:"form"`
-	ID                       int       `json:"id"`
-	InDreamTeam              bool      `json:"in_dreamteam"`
-	News                     string    `json:"news"`
-	NewsAdded                time.Time `json:"news_added"`
-	NowCost                  int       `json:"now_cost"`
-	Photo                    string    `json:"photo"`
-	PointsPerGame            float32   `json:"points_per_game"`
-	SecondName               string    `json:"second_name"`
-	SelectedByPercent        float32   `json:"selected_by_percent"`
-	Special                  bool      `json:"special"`
-	SquadNumber              int       `json:"squad_number"`
-	Status                   string    `json:"status"`
-	Team                     int       `json:"team"`
-	TeamCode                 int       `json:"team_code"`
-	TotalPoints              int       `json:"total_points"`
-	TransfersIn              int       `json:"transfers_in"`
-	TransfersInEvent         int       `json:"transfers_in_event"`
-	TransfersOut             int       `json:"transfers_out"`
-	TransfersOutEvent        int       `json:"transfers_out_event"`
-	ValueForm                float32   `json:"value_form"`
-	ValueSeason              float32   `json:"value_season"`
-	WebName                  string    `json:"web_name"`
-	Minutes                  int       `json:"minutes"`
-	GoalsScored              int       `json:"goals_scored"`
-	Assists                  int       `json:"assists"`
-	CleanSheets              int       `json:"clean_sheets"`
-	GoalsConceded            int       `json:"goals_conceded"`
-	OwnGoals                 int       `json:"own_goals"`
-	PenaltiesSaved           int       `json:"penalties_saved"`
-	PenaltiesMissed          int       `json:"penalties_missed"`
-	YellowCards              int       `json:"yellow_cards"`
-	RedCards                 int       `json:"red_cards"`
-	Saved                    int       `json:"saves"`
-	Bonus                    int       `json:"bonus"`
-	BPS                      int       `json:"bps"`
-	Influence                float32   `json:"influence"`
-	Creativity               float32   `json:"creativity"`
-	Threat                   float32   `json:"threat"`
-	ICTIndex                 float32   `json:"ict_index"`
+	ChanceOfPlayingNextRound int     `mapstructure:"chance_of_playing_next_round"`
+	ChanceOfPlayingThisRound int     `mapstructure:"chance_of_playing_this_round"`
+	Code                     int     `mapstructure:"code"`
+	CostChangeEvent          int     `mapstructure:"cost_change_event"`
+	CostChnageFall           int     `mapstructure:"cost_change_event_fall"`
+	CostChangeStart          int     `mapstructure:"cost_change_start"`
+	CostChangeStartFall      int     `mapstructure:"cost_change_start_fall"`
+	DreamPlayerCount         int     `mapstructure:"dreamplayer_count"`
+	ElementType              int     `mapstructure:"element_type"`
+	EPNext                   float64 `mapstructure:"ep_next"` //float64
+	EPThis                   float64 `mapstructure:"ep_this"` //float64
+	EventPoints              int     `mapstructure:"event_points"`
+	FirstName                string  `mapstructure:"first_name"`
+	Form                     float64 `mapstructure:"form"` //float64
+	ID                       int     `mapstructure:"id"`
+	InDreamTeam              bool    `mapstructure:"in_dreamteam"`
+	News                     string  `mapstructure:"news"`
+	NewsAdded                string  `mapstructure:"news_added"` //time.Time
+	NowCost                  int     `mapstructure:"now_cost"`
+	Photo                    string  `mapstructure:"photo"`
+	PointsPerGame            float64 `mapstructure:"points_per_game"` //float64
+	SecondName               string  `mapstructure:"second_name"`
+	SelectedByPercent        float64 `mapstructure:"selected_by_percent"` //float64
+	Special                  bool    `mapstructure:"special"`
+	SquadNumber              int     `mapstructure:"squad_number"`
+	Status                   string  `mapstructure:"status"`
+	Team                     int     `mapstructure:"team"`
+	TeamCode                 int     `mapstructure:"team_code"`
+	TotalPoints              int     `mapstructure:"total_points"`
+	TransfersIn              int     `mapstructure:"transfers_in"`
+	TransfersInEvent         int     `mapstructure:"transfers_in_event"`
+	TransfersOut             int     `mapstructure:"transfers_out"`
+	TransfersOutEvent        int     `mapstructure:"transfers_out_event"`
+	ValueForm                float64 `mapstructure:"value_form"`   //float64
+	ValueSeason              float64 `mapstructure:"value_season"` //float64
+	WebName                  string  `mapstructure:"web_name"`
+	Minutes                  int     `mapstructure:"minutes"`
+	GoalsScored              int     `mapstructure:"goals_scored"`
+	Assists                  int     `mapstructure:"assists"`
+	CleanSheets              int     `mapstructure:"clean_sheets"`
+	GoalsConceded            int     `mapstructure:"goals_conceded"`
+	OwnGoals                 int     `mapstructure:"own_goals"`
+	PenaltiesSaved           int     `mapstructure:"penalties_saved"`
+	PenaltiesMissed          int     `mapstructure:"penalties_missed"`
+	YellowCards              int     `mapstructure:"yellow_cards"`
+	RedCards                 int     `mapstructure:"red_cards"`
+	Saved                    int     `mapstructure:"saves"`
+	Bonus                    int     `mapstructure:"bonus"`
+	BPS                      int     `mapstructure:"bps"`
+	Influence                float64 `mapstructure:"influence"`  //float64
+	Creativity               float64 `mapstructure:"creativity"` //float64
+	Threat                   float64 `mapstructure:"threat"`     //float64
+	ICTIndex                 float64 `mapstructure:"ict_index"`  //float64
 }
 
 // GetFullName returns the player's fullname
@@ -68,12 +84,5 @@ func (p *FPLPlayer) GetFullName() string {
 
 // GetPhotoURL returns the full URL to the players photo
 func (p *FPLPlayer) GetPhotoURL() string {
-	return fmt.Sprintf("https://platform-static-files.s3.amazonaws.com/premierleague/photos/players/110x140/p{%d}.png", p.Code)
-}
-
-// GetPlayersTeam returns the players team object
-func (p *FPLPlayer) GetPlayersTeam() FPLTeam {
-	t := FPLTeam{}
-
-	return t.GetByCode(p.TeamCode)
+	return fmt.Sprintf("https://platform-static-files.s3.amazonaws.com/premierleague/photos/players/110x140/p%d.png", p.Code)
 }

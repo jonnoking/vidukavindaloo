@@ -9,13 +9,14 @@ import (
 	"github.com/jonnoking/vidukavindaloo/utils/cache"
 )
 
-var Players map[int]models.FPLPlayer
+var Players *models.FPLPlayers
 var Teams *models.FPLTeams
 
 func Load() {
 	// load globals
 	b, _ := LoadBootsrapFromCache()
 	Teams, _ = models.NewFPLTeamsFromBootStrapByteArray(b)
+	Players, _ = models.NewFPLPlayersFromBootStrapByteArray(b)
 
 	//Teams := models.NewFPLTeams(t)
 

@@ -36,8 +36,16 @@ func main() {
 	t, _ := fpl.Teams.GetTeamByName("Southampton")
 	log.Println(t.Name)
 
-	for code, team := range fpl.Teams.Teams {
-		log.Println(code, team.Name)
+	// for code, team := range fpl.Teams.Teams {
+	// 	log.Println(code, team.Name)
+	// }
+
+	for _, player := range fpl.Players.Players {
+		//		log.Println(code, player.TeamCode, player.WebName)
+		if player.Code == 168399 {
+			//log.Println(code, player.GetFullName())
+			log.Println(fmt.Sprintf("%+v", player))
+		}
 	}
 
 	// conf := config.New()
