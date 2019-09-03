@@ -6,50 +6,50 @@ import (
 	"io/ioutil"
 )
 
-func NewFPLTeams(teams []FPLTeam) (*FPLTeams, error) {
-	ts := map[int]FPLTeam{}
+func NewTeams(teams []Team) (*Teams, error) {
+	ts := map[int]Team{}
 	for _, team := range teams {
 		ts[team.Code] = team
 	}
 
-	t := new(FPLTeams)
+	t := new(Teams)
 	t.Teams = ts
 
 	return t, nil
 }
 
-func NewFPLTeamsFromBootStrap(filename string) (*FPLTeams, error) {
+func NewTeamsFromBootStrap(filename string) (*Teams, error) {
 	f, err := ioutil.ReadFile(filename)
 	if err != nil {
 		return nil, err
 	}
-	r, e := NewFPLTeamsFromBootStrapByteArray(f)
+	r, e := NewTeamsFromBootStrapByteArray(f)
 
 	return r, e
 }
 
-func NewFPLTeamsFromBootStrapByteArray(bootstrap []byte) (*FPLTeams, error) {
+func NewTeamsFromBootStrapByteArray(bootstrap []byte) (*Teams, error) {
 
 	var result map[string]interface{}
 	json.Unmarshal([]byte(bootstrap), &result)
 
-	r, e := NewFPLTeamsFromBootStrapMap(result)
+	r, e := NewTeamsFromBootStrapMap(result)
 
 	return r, e
 }
 
-func NewFPLTeamsFromBootStrapMap(bootstrap map[string]interface{}) (*FPLTeams, error) {
+func NewTeamsFromBootStrapMap(bootstrap map[string]interface{}) (*Teams, error) {
 
 	config := &mapstructure.DecoderConfig{
 		TagName:          "json",
 		WeaklyTypedInput: true,
 	}
 
-	ts := []FPLTeam{}
+	ts := []Team{}
 	teams := bootstrap["teams"].([]interface{})
 
 	for _, v := range teams {
-		var team FPLTeam
+		var team Team
 
 		config.Result = &team
 
@@ -62,7 +62,7 @@ func NewFPLTeamsFromBootStrapMap(bootstrap map[string]interface{}) (*FPLTeams, e
 		ts = append(ts, team)
 	}
 
-	r, e := NewFPLTeams(ts)
+	r, e := NewTeams(ts)
 
 	return r, e
 }

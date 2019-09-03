@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
-	//"github.com/jonnoking/vidukavindaloo/utils/config"
+	"github.com/jonnoking/vidukavindaloo/utils/config"
 	"github.com/jonnoking/vidukavindaloo/utils/fpl"
 
 	//"./utils/config"
@@ -15,8 +15,8 @@ import (
 	// "html/template"
 	"log"
 	"net/http"
-	//	"os"
-	//	"os/signal"
+	"os"
+	"os/signal"
 	"strconv"
 	"sync"
 	"time"
@@ -33,8 +33,18 @@ func init() {
 func main() {
 
 	fpl.Load()
-	t, _ := fpl.Teams.GetTeamByName("Southampton")
-	log.Println(t.Name)
+
+	// t, _ := fpl.Teams.GetTeamByName("Southampton")
+	// log.Println(t.Name)
+
+	mt, _ := fpl.GetMyTeam(1759299, fpl.Players, fpl.Teams, fpl.PlayerTypes)
+
+	for _, v := range mt.Picks {
+		fmt.Printf("%v [%d] %s\n", v.Player.GetFullName(), v.Player.SquadNumber, v.Team.Name)
+		fmt.Println(v.Player)
+	}
+
+	//fmt.Printf("%+v", mt)
 
 	// for code, team := range fpl.Teams.Teams {
 	// 	log.Println(code, team.Name)
@@ -48,28 +58,31 @@ func main() {
 	// 	}
 	// }
 	//will, _ := fpl.Players.GetPlayerByFullName("Will Norris")
-	wn := fpl.Players.Players[168399]
-	//168399
-	log.Println(fmt.Sprintf("%+v", wn))
+	// wn := fpl.Players.Players[168399]
+	// //168399
+	// log.Println(fmt.Sprintf("%+v", wn))
 
-	// conf := config.New()
+}
 
-	// serverConfig := HttpServerConfig{
-	// 	Host:         conf.HTTP.HTTPHost,
-	// 	Port:         conf.HTTP.HTTPPort,
-	// 	HTTPSDomains: conf.HTTP.HTTPSDomains,
-	// 	ReadTimeout:  5 * time.Second,
-	// 	WriteTimeout: 5 * time.Second,
-	// }
+func runServer() {
+	conf := config.New()
 
-	// httpServer := Start(serverConfig)
-	// defer httpServer.Stop()
+	serverConfig := HttpServerConfig{
+		Host:         conf.HTTP.HTTPHost,
+		Port:         conf.HTTP.HTTPPort,
+		HTTPSDomains: conf.HTTP.HTTPSDomains,
+		ReadTimeout:  5 * time.Second,
+		WriteTimeout: 5 * time.Second,
+	}
 
-	// sigChan := make(chan os.Signal, 1)
-	// signal.Notify(sigChan, os.Interrupt)
-	// <-sigChan
+	httpServer := Start(serverConfig)
+	defer httpServer.Stop()
 
-	// fmt.Printf("\nmain : shutting down")
+	sigChan := make(chan os.Signal, 1)
+	signal.Notify(sigChan, os.Interrupt)
+	<-sigChan
+
+	fmt.Printf("\nmain : shutting down")
 }
 
 //HttpServerConfig configuration for http server

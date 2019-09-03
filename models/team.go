@@ -5,21 +5,21 @@ import (
 	s "strings"
 )
 
-// FPLTeams represents all teams in the FPL
-type FPLTeams struct {
-	Teams map[int]FPLTeam `json:"teams"`
+// Teams represents all teams in the FPL
+type Teams struct {
+	Teams map[int]Team `json:"teams"`
 }
 
-func (p *FPLTeams) New(teams []FPLTeam) {
-	ts := map[int]FPLTeam{}
+func (p *Teams) New(teams []Team) {
+	ts := map[int]Team{}
 	for _, team := range teams {
 		ts[team.Code] = team
 	}
 	p.Teams = ts
 }
 
-func (p *FPLTeams) GetTeamByName(name string) (FPLTeam, error) {
-	var ret FPLTeam
+func (p *Teams) GetTeamByName(name string) (Team, error) {
+	var ret Team
 
 	for _, team := range p.Teams {
 		if s.ToLower(team.Name) == s.ToLower(name) {
@@ -29,8 +29,8 @@ func (p *FPLTeams) GetTeamByName(name string) (FPLTeam, error) {
 	return ret, fmt.Errorf("No team called %s found", name)
 }
 
-func (p *FPLTeams) GetTeamByCode(code int) (FPLTeam, error) {
-	var ret FPLTeam
+func (p *Teams) GetTeamByCode(code int) (Team, error) {
+	var ret Team
 
 	team, found := p.Teams[code]
 	if !found {
@@ -40,8 +40,8 @@ func (p *FPLTeams) GetTeamByCode(code int) (FPLTeam, error) {
 	return team, nil
 }
 
-// FPLTeam represents a Premier League team
-type FPLTeam struct {
+// Team represents a Premier League team
+type Team struct {
 	Code                int    `json:"code"`
 	Draw                int    `json:"draw"`
 	Form                int    `json:"form"`
@@ -65,16 +65,16 @@ type FPLTeam struct {
 }
 
 // GetShirtSmall returns url to small verion of the team shirt image
-func (p *FPLTeam) GetShirtSmall() string {
+func (p *Team) GetShirtSmall() string {
 	return fmt.Sprintf("https://fantasy.premierleague.com/dist/image/shirts/shirt_%d-66.png", p.Code)
 }
 
 // GetShirtMedium returns url to medium verion of the team shirt image
-func (p *FPLTeam) GetShirtMedium() string {
+func (p *Team) GetShirtMedium() string {
 	return fmt.Sprintf("https://fantasy.premierleague.com/dist/image/shirts/shirt_%d-110.png", p.Code)
 }
 
 // GetShirtLarge returns url to large verion of the team shirt image
-func (p *FPLTeam) GetShirtLarge() string {
+func (p *Team) GetShirtLarge() string {
 	return fmt.Sprintf("https://fantasy.premierleague.com/dist/image/shirts/shirt_%d-220.png", p.Code)
 }

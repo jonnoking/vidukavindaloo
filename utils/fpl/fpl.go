@@ -1,7 +1,9 @@
 package fpl
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 
@@ -9,14 +11,16 @@ import (
 	"github.com/jonnoking/vidukavindaloo/utils/cache"
 )
 
-var Players *models.FPLPlayers
-var Teams *models.FPLTeams
+var Players *models.Players
+var Teams *models.Teams
+var PlayerTypes *models.PlayerTypes
 
 func Load() {
 	// load globals
 	b, _ := LoadBootsrapFromCache()
-	Teams, _ = models.NewFPLTeamsFromBootStrapByteArray(b)
-	Players, _ = models.NewFPLPlayersFromBootStrapByteArray(b)
+	Teams, _ = models.NewTeamsFromBootStrapByteArray(b)
+	Players, _ = models.NewPlayersFromBootStrapByteArray(b)
+	PlayerTypes, _ = models.NewPlayerTypesFromByteArray(b)
 
 	//Teams := models.NewFPLTeams(t)
 
@@ -63,8 +67,24 @@ func main() {
 
 }
 
-//GetMyTeam retrive my team from FPL
-func GetMyTeam(teamID int) error {
+func GetMyTeam(teamID int, players *models.Players, teams *models.Teams, playerTypes *models.PlayerTypes) (*models.MyTeam, error) {
+
+	// add teamID to file name
+	f, err := ioutil.ReadFile("./fpl-myteam.json")
+	if err != nil {
+		return nil, err
+	}
+
+	myteam, _ := models.NewMyTeam(f, players, teams, playerTypes)
+
+	return myteam, nil
+
+}
+
+//RefreshMyTeam retrive my team from FPL
+func RefershMyTeam(teamID int) (*models.MyTeam, error) {
+
+	var myteam models.MyTeam
 	apiURL := fmt.Sprintf("https://fantasy.premierleague.com/api/my-team/%d/", teamID)
 
 	client := &http.Client{}
@@ -73,20 +93,26 @@ func GetMyTeam(teamID int) error {
 
 	resp, respErr := client.Do(r)
 	if respErr != nil {
-		return respErr
+		return &myteam, respErr
 	}
 
 	defer resp.Body.Close()
 
 	if resp.StatusCode != 200 {
-		log.Panic("\nStatus Code: ", resp.StatusCode)
-		log.Println(resp.Status)
-		return nil
+		return &myteam, fmt.Errorf("MyTeam : status code: %d - %s", resp.StatusCode, resp.Status)
 	}
+
+	byteValue, readErr := ioutil.ReadAll(resp.Body)
+	if readErr != nil {
+		log.Fatal(readErr)
+	}
+
+	myteam = models.MyTeam{}
+	json.Unmarshal([]byte(byteValue), &myteam)
 
 	cache.SaveBodyToFile(resp.Body, "./fpl-myteam.json")
 
-	return nil
+	return &myteam, nil
 }
 
 func check(e error) {

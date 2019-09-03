@@ -5,13 +5,14 @@ import (
 	s "strings"
 )
 
-// FPLPlayers represents all players in the FPL
-type FPLPlayers struct {
-	Players map[int]FPLPlayer `json:"players"`
+// Players represents all players in the FPL
+type Players struct {
+	Players     map[int]Player `json:"players"`
+	PlayersByID map[int]Player `json:"players"`
 }
 
-func (p *FPLPlayers) GetPlayerByFullName(fullname string) (FPLPlayer, error) {
-	var ret FPLPlayer
+func (p *Players) GetPlayerByFullName(fullname string) (Player, error) {
+	var ret Player
 
 	for _, player := range p.Players {
 		if s.ToLower(player.GetFullName()) == s.ToLower(fullname) {
@@ -21,7 +22,7 @@ func (p *FPLPlayers) GetPlayerByFullName(fullname string) (FPLPlayer, error) {
 	return ret, fmt.Errorf("No player called %s found", fullname)
 }
 
-type FPLPlayer struct {
+type Player struct {
 	ChanceOfPlayingNextRound int     `json:"chance_of_playing_next_round"`
 	ChanceOfPlayingThisRound int     `json:"chance_of_playing_this_round"`
 	Code                     int     `json:"code"`
@@ -78,11 +79,11 @@ type FPLPlayer struct {
 }
 
 // GetFullName returns the player's fullname
-func (p *FPLPlayer) GetFullName() string {
+func (p *Player) GetFullName() string {
 	return fmt.Sprintf("%s %s", p.FirstName, p.SecondName)
 }
 
 // GetPhotoURL returns the full URL to the players photo
-func (p *FPLPlayer) GetPhotoURL() string {
+func (p *Player) GetPhotoURL() string {
 	return fmt.Sprintf("https://platform-static-files.s3.amazonaws.com/premierleague/photos/players/110x140/p%d.png", p.Code)
 }

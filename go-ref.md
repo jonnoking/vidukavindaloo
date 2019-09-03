@@ -91,3 +91,14 @@ https://www.thegeekstuff.com/2017/05/nginx-location-examples/
 https://meshstudio.io/blog/2017-11-06-serving-html-with-golang/
 
 https://github.com/meshhq/golang-html-template-tutorial/blob/master/main.go
+
+
+## JSON / Map --> Structure
+
+https://godoc.org/github.com/mitchellh/mapstructure
+
+https://stackoverflow.com/questions/51813411/golang-mapstructure-not-working-as-expected
+
+https://stackoverflow.com/questions/22343083/json-unmarshaling-with-long-numbers-gives-floating-point-number
+
+https://yourbasic.org/golang/json-example/
