@@ -11,7 +11,7 @@
 - [x] letsencrypt https
 - [ ] DNS subdomain hosted on docker
 - [ ] Add logging to Go-www service
-- [ ] FPL - API working
+- [x] FPL - API working
 - [ ] FPL - get snapshot of team
 - [ ] FPL - get snapshot of each team in league
 - [ ] FPL - scheduled event to capture each team

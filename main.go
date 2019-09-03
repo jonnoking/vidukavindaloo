@@ -7,14 +7,16 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
-	"github.com/jonnoking/vidukavindaloo/utils/config"
+	//"github.com/jonnoking/vidukavindaloo/utils/config"
+	"github.com/jonnoking/vidukavindaloo/utils/fpl"
+
 	//"./utils/config"
 	"golang.org/x/crypto/acme/autocert"
 	// "html/template"
 	"log"
 	"net/http"
-	"os"
-	"os/signal"
+	//	"os"
+	//	"os/signal"
 	"strconv"
 	"sync"
 	"time"
@@ -30,35 +32,32 @@ func init() {
 
 func main() {
 
-	conf := config.New()
+	fpl.Load()
+	t, _ := fpl.Teams.GetTeamByName("Southampton")
+	log.Println(t.Name)
 
-	serverConfig := HttpServerConfig{
-		Host:         conf.HTTP.HTTPHost,
-		Port:         conf.HTTP.HTTPPort,
-		HTTPSDomains: conf.HTTP.HTTPSDomains,
-		ReadTimeout:  5 * time.Second,
-		WriteTimeout: 5 * time.Second,
+	for code, team := range fpl.Teams.Teams {
+		log.Println(code, team.Name)
 	}
 
-	httpServer := Start(serverConfig)
-	defer httpServer.Stop()
+	// conf := config.New()
 
-	sigChan := make(chan os.Signal, 1)
-	signal.Notify(sigChan, os.Interrupt)
-	<-sigChan
-
-	fmt.Printf("\nmain : shutting down")
-
-	// Print out environment variables
-	// fmt.Println(conf.FPL.Me)
-	// fmt.Println(conf.FPL.VVLeague)
-	// fmt.Println(conf.DebugMode)
-	// fmt.Println(conf.MaxUsers)
-
-	// // Print out each role
-	// for _, role := range conf.UserRoles {
-	// 	fmt.Println(role)
+	// serverConfig := HttpServerConfig{
+	// 	Host:         conf.HTTP.HTTPHost,
+	// 	Port:         conf.HTTP.HTTPPort,
+	// 	HTTPSDomains: conf.HTTP.HTTPSDomains,
+	// 	ReadTimeout:  5 * time.Second,
+	// 	WriteTimeout: 5 * time.Second,
 	// }
+
+	// httpServer := Start(serverConfig)
+	// defer httpServer.Stop()
+
+	// sigChan := make(chan os.Signal, 1)
+	// signal.Notify(sigChan, os.Interrupt)
+	// <-sigChan
+
+	// fmt.Printf("\nmain : shutting down")
 }
 
 //HttpServerConfig configuration for http server
