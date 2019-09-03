@@ -7,7 +7,7 @@ import (
 
 // FPLTeams represents all teams in the FPL
 type FPLTeams struct {
-	Teams map[int]FPLTeam `mapstructure:"teams"`
+	Teams map[int]FPLTeam `json:"teams"`
 }
 
 func (p *FPLTeams) New(teams []FPLTeam) {
@@ -42,26 +42,26 @@ func (p *FPLTeams) GetTeamByCode(code int) (FPLTeam, error) {
 
 // FPLTeam represents a Premier League team
 type FPLTeam struct {
-	Code                int    `mapstructure:"code"`
-	Draw                int    `mapstructure:"draw"`
-	Form                int    `mapstructure:"form"`
-	ID                  int    `mapstructure:"id"`
-	Lost                int    `mapstructure:"loss"`
-	Name                string `mapstructure:"name"`
-	Played              int    `mapstructure:"played"`
-	Points              int    `mapstructure:"points"`
-	Position            int    `mapstructure:"position"`
-	ShortName           string `mapstructure:"short_name"`
-	Strength            int    `mapstructure:"strength"`
-	TeamDivision        int    `mapstructure:"team_division"`
-	Unavailable         bool   `mapstructure:"unavailable"`
-	Win                 int    `mapstructure:"win"`
-	StrengthOverallHome int    `mapstructure:"strength_overall_home"`
-	StrengthOverallAway int    `mapstructure:"strength_overall_away"`
-	StrengthAttackHome  int    `mapstructure:"strength_attack_home"`
-	StrengthAttackAway  int    `mapstructure:"strength_attack_away"`
-	StrengthDefenceHome int    `mapstructure:"strength_defence_home"`
-	StrengthDefenceAway int    `mapstructure:"strength_defence_away"`
+	Code                int    `json:"code"`
+	Draw                int    `json:"draw"`
+	Form                int    `json:"form"`
+	ID                  int    `json:"id"`
+	Lost                int    `json:"loss"`
+	Name                string `json:"name"`
+	Played              int    `json:"played"`
+	Points              int    `json:"points"`
+	Position            int    `json:"position"`
+	ShortName           string `json:"short_name"`
+	Strength            int    `json:"strength"`
+	TeamDivision        int    `json:"team_division"`
+	Unavailable         bool   `json:"unavailable"`
+	Win                 int    `json:"win"`
+	StrengthOverallHome int    `json:"strength_overall_home"`
+	StrengthOverallAway int    `json:"strength_overall_away"`
+	StrengthAttackHome  int    `json:"strength_attack_home"`
+	StrengthAttackAway  int    `json:"strength_attack_away"`
+	StrengthDefenceHome int    `json:"strength_defence_home"`
+	StrengthDefenceAway int    `json:"strength_defence_away"`
 }
 
 // GetShirtSmall returns url to small verion of the team shirt image

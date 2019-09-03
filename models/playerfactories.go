@@ -2,7 +2,6 @@ package models
 
 import (
 	"encoding/json"
-	//"fmt"
 	"github.com/mitchellh/mapstructure"
 	"io/ioutil"
 	"log"
@@ -42,9 +41,10 @@ func NewFPLPlayersFromBootStrapByteArray(bootstrap []byte) (*FPLPlayers, error) 
 
 func NewFPLPlayersFromBootStrapMap(bootstrap map[string]interface{}) (*FPLPlayers, error) {
 
-	// config := &mapstructure.DecoderConfig{
-	// 	TagName: "json",
-	// }
+	config := &mapstructure.DecoderConfig{
+		TagName:          "json",
+		WeaklyTypedInput: true,
+	}
 
 	ts := []FPLPlayer{}
 	players := bootstrap["elements"].([]interface{})
@@ -53,18 +53,16 @@ func NewFPLPlayersFromBootStrapMap(bootstrap map[string]interface{}) (*FPLPlayer
 
 		var player FPLPlayer
 
-		// decoder, _ := mapstructure.NewDecoder(config)
-		// config.Result = &player
-		// i, ok := v.(map[string]interface{})
-		// if !ok {
-		// 	log.Fatal(fmt.Sprintf("%#+v", v))
-		// }
-		// decoder.Decode(i)
+		config.Result = &player
 
-		mapstructure.WeakDecode(v, &player)
+		decoder, _ := mapstructure.NewDecoder(config)
+		i, _ := v.(map[string]interface{})
+
+		decoder.Decode(i)
+
+		//mapstructure.WeakDecode(v, &player)
 
 		ts = append(ts, player)
-		//log.Println(player)
 	}
 
 	r, e := NewFPLPlayers(ts)

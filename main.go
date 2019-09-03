@@ -40,13 +40,17 @@ func main() {
 	// 	log.Println(code, team.Name)
 	// }
 
-	for _, player := range fpl.Players.Players {
-		//		log.Println(code, player.TeamCode, player.WebName)
-		if player.Code == 168399 {
-			//log.Println(code, player.GetFullName())
-			log.Println(fmt.Sprintf("%+v", player))
-		}
-	}
+	// for code, player := range fpl.Players.Players {
+	// 	//		log.Println(code, player.TeamCode, player.WebName)
+	// 	if player.TeamCode == 1 {
+	// 		log.Println(code, player.GetFullName())
+	// 		log.Println(fmt.Sprintf("%+v", player))
+	// 	}
+	// }
+	//will, _ := fpl.Players.GetPlayerByFullName("Will Norris")
+	wn := fpl.Players.Players[168399]
+	//168399
+	log.Println(fmt.Sprintf("%+v", wn))
 
 	// conf := config.New()
 

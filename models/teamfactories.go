@@ -2,10 +2,8 @@ package models
 
 import (
 	"encoding/json"
-	//	"fmt"
 	"github.com/mitchellh/mapstructure"
 	"io/ioutil"
-	//	"log"
 )
 
 func NewFPLTeams(teams []FPLTeam) (*FPLTeams, error) {
@@ -42,9 +40,10 @@ func NewFPLTeamsFromBootStrapByteArray(bootstrap []byte) (*FPLTeams, error) {
 
 func NewFPLTeamsFromBootStrapMap(bootstrap map[string]interface{}) (*FPLTeams, error) {
 
-	// config := &mapstructure.DecoderConfig{
-	// 	TagName: "json",
-	// }
+	config := &mapstructure.DecoderConfig{
+		TagName:          "json",
+		WeaklyTypedInput: true,
+	}
 
 	ts := []FPLTeam{}
 	teams := bootstrap["teams"].([]interface{})
@@ -52,15 +51,14 @@ func NewFPLTeamsFromBootStrapMap(bootstrap map[string]interface{}) (*FPLTeams, e
 	for _, v := range teams {
 		var team FPLTeam
 
-		// decoder, _ := mapstructure.NewDecoder(config)
-		// config.Result = &team
-		// i, ok := v.(map[string]interface{})
-		// if !ok {
-		// 	log.Fatal(fmt.Sprintf("%#+v", v))
-		// }
-		// decoder.Decode(i)
+		config.Result = &team
 
-		mapstructure.Decode(v, &team)
+		decoder, _ := mapstructure.NewDecoder(config)
+		i, _ := v.(map[string]interface{})
+
+		decoder.Decode(i)
+
+		//mapstructure.Decode(v, &team)
 		ts = append(ts, team)
 	}
 
