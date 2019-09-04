@@ -1,0 +1,19 @@
+fpl-2019:
+  bootstrap: https://fantasy.premierleague.com/api/bootstrap-static/
+  fixtures: https://fantasy.premierleague.com/api/fixtures/
+  player: https://fantasy.premierleague.com/api/element-summary/{element_id}/
+  league_standings: 
+    classic: https://fantasy.premierleague.com/api/leagues-classic/1132753/standings/
+    head_to_head: https://fantasy.premierleague.com/api/leagues-h2h/{league-id}/standings/
+  user: 
+    details: https://fantasy.premierleague.com/api/entry/1759299/
+    history: https://fantasy.premierleague.com/api/entry/1759299/history/
+    gameweek: https://fantasy.premierleague.com/api/entry/{team_id}/event/{gameweek_id}/picks/
+  my: 
+    team: https://fantasy.premierleague.com/api/my-team/1759299/
+    transfers: https://fantasy.premierleague.com/api/entry/1759299/transfers-latest/
+  game_week: https://fantasy.premierleague.com/api/event/{gameweek_id}/live/
+  leagues: 
+    overall: 314
+    england: 261
+    viduka_vindaloo: 1132753

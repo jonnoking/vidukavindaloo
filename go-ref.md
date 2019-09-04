@@ -102,3 +102,11 @@ https://stackoverflow.com/questions/51813411/golang-mapstructure-not-working-as-
 https://stackoverflow.com/questions/22343083/json-unmarshaling-with-long-numbers-gives-floating-point-number
 
 https://yourbasic.org/golang/json-example/
+
+
+## Best Practices
+
+https://github.com/golang-standards/project-layout
+
+https://github.com/tmrts/go-patterns
+

@@ -40,8 +40,8 @@ func main() {
 	mt, _ := fpl.GetMyTeam(1759299, fpl.Players, fpl.Teams, fpl.PlayerTypes)
 
 	for _, v := range mt.Picks {
-		fmt.Printf("%v [%d] %s\n", v.Player.GetFullName(), v.Player.SquadNumber, v.Team.Name)
-		fmt.Println(v.Player)
+		fmt.Printf("%v [%s] %s\n", v.Player.GetFullName(), v.Position, v.Team.Name)
+		//fmt.Println(v.Player)
 	}
 
 	//fmt.Printf("%+v", mt)

@@ -2,7 +2,6 @@ package models
 
 import (
 	"encoding/json"
-	"log"
 )
 
 func NewMyTeam(b []byte, players *Players, teams *Teams, positions *PlayerTypes) (*MyTeam, error) {
@@ -10,18 +9,10 @@ func NewMyTeam(b []byte, players *Players, teams *Teams, positions *PlayerTypes)
 	myteam := MyTeam{}
 	json.Unmarshal([]byte(b), &myteam)
 
-	log.Println("Player Start", myteam.Picks[0].Player.FirstName)
-	for _, p := range myteam.Picks {
-		p.Player = players.PlayersByID[p.PlayerID]
-		//log.Println(len(players.Players))
-		//log.Println(players.PlayersByID[p.PlayerID])
-		//log.Println(p.Player.FirstName)
-		p.Team = teams.Teams[p.Player.TeamCode]
-		log.Println(p.Team.Name)
-		p.PlayerType = positions.Positions[p.Position]
+	for i := 0; i < len(myteam.Picks); i++ {
+		myteam.Picks[i].Player = players.PlayersByID[myteam.Picks[i].PlayerID]
+		myteam.Picks[i].Team = teams.Teams[myteam.Picks[i].Player.TeamCode]
 	}
-	log.Println("Player End", myteam.Picks[0].Player.FirstName)
-	log.Println("Team End", myteam.Picks[0].Team.Name)
 
 	return &myteam, nil
 }

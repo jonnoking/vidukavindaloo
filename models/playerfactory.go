@@ -7,6 +7,24 @@ import (
 	"log"
 )
 
+// error - circular package reference
+// func GetPlayerByCode(code int) (*Player, error) {
+// 	var plr Player
+
+// 	if fpl.Players == nil {
+// 		return fmt.Errorf("Players collection not populated"), plr
+// 	}
+
+// 	plr := fpl.Players[code]
+// 	plr.PlayerType := fpl.PlayerTypes[plr.PlayerTypeID]
+
+// 	if (plr == nil) {
+// 		return fmt.Errorf("Player not found"), plr
+// 	}
+
+// 	return plr, nil
+// }
+
 func NewPlayers(players []Player) (*Players, error) {
 	ts := map[int]Player{}
 	tid := map[int]Player{}
