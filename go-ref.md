@@ -110,3 +110,68 @@ https://github.com/golang-standards/project-layout
 
 https://github.com/tmrts/go-patterns
 
+
+
+
+server {
+    listen 80;
+    server_name cloudjonno.com;
+    server_tokens off;
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+server {
+    listen 443 ssl;
+    server_name cloudjonno.com;
+    server_tokens off;
+
+    ssl_certificate /etc/letsencrypt/live/cloudjonno.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/cloudjonno.com/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    location / {
+        proxy_pass  http://vidukavindaloo-go-www:8111;
+        proxy_set_header    Host                $http_host;
+        proxy_set_header    X-Real-IP           $remote_addr;
+        proxy_set_header    X-Forwarded-For     $proxy_add_x_forwarded_for;
+    }
+}
+
+
+
+## Setting up docker images for cloudjonno.com for the first time.
+
+Post: https://medium.com/@pentacent/nginx-and-lets-encrypt-with-docker-in-less-than-5-minutes-b4b8a60d3a71
+
+Github: https://github.com/wmnnd/nginx-certbot
+
+Make changes to `init-letsencrypt.sh` - change example.org to cloudjonno.com
+
+Remove this section for cert validation
+```location / {
+        proxy_pass  http://vidukavindaloo-go-www:8111;
+        proxy_set_header    Host                $http_host;
+        proxy_set_header    X-Real-IP           $remote_addr;
+        proxy_set_header    X-Forwarded-For     $proxy_add_x_forwarded_for;
+    }```
+
+Run `./init-letsencrypt.sh`
+
+pull down docker images
+
+add redirect section to vidukavindaloo image & port
+
+`docker-compose up -d`
+
+connect to network of vidukavindaloo-go-www - make sure vv is alread connected to network
+
+`docker network connect cloudjonno-network cloudjonno-nginx`
+
