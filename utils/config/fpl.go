@@ -1,6 +1,7 @@
 package config
 
 import (
+	"strconv"
 	"strings"
 )
 
@@ -22,6 +23,6 @@ const (
 )
 
 func GetPlayersAPI(code int) string {
-	api = PLAYERS
-	return strings.Replace(api, "{element_id", code, -1)
+	api := PLAYERS
+	return strings.Replace(api, "{element_id", strconv.Itoa(code), -1)
 }
