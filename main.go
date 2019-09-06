@@ -5,10 +5,10 @@ import (
 	"context"
 	"crypto/tls"
 	"fmt"
+
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 	"github.com/jonnoking/vidukavindaloo/utils/config"
-	"github.com/jonnoking/vidukavindaloo/utils/fpl"
 
 	//"./utils/config"
 	"golang.org/x/crypto/acme/autocert"
@@ -32,17 +32,17 @@ func init() {
 
 func main() {
 
-	fpl.Load()
+	// fpl.Load()
 
-	// t, _ := fpl.Teams.GetTeamByName("Southampton")
-	// log.Println(t.Name)
+	// // t, _ := fpl.Teams.GetTeamByName("Southampton")
+	// // log.Println(t.Name)
 
-	mt, _ := fpl.GetMyTeam(1759299, fpl.Players, fpl.Teams, fpl.PlayerTypes)
+	// mt, _ := fpl.GetMyTeam(1759299, fpl.Players, fpl.Teams, fpl.PlayerTypes)
 
-	for _, v := range mt.Picks {
-		fmt.Printf("%v [%s] %s\n", v.Player.GetFullName(), v.Position, v.Team.Name)
-		//fmt.Println(v.Player)
-	}
+	// for _, v := range mt.Picks {
+	// 	fmt.Printf("%v [%s] %s\n", v.Player.GetFullName(), v.Position, v.Team.Name)
+	// 	//fmt.Println(v.Player)
+	// }
 
 	//fmt.Printf("%+v", mt)
 
@@ -61,6 +61,8 @@ func main() {
 	// wn := fpl.Players.Players[168399]
 	// //168399
 	// log.Println(fmt.Sprintf("%+v", wn))
+
+	runServer()
 
 }
 
