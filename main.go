@@ -9,6 +9,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 	"github.com/jonnoking/vidukavindaloo/utils/config"
+	"github.com/jonnoking/vidukavindaloo/utils/fpl"
 
 	//"./utils/config"
 	"golang.org/x/crypto/acme/autocert"
@@ -62,7 +63,9 @@ func main() {
 	// //168399
 	// log.Println(fmt.Sprintf("%+v", wn))
 
-	runServer()
+	fpl.GetScreenshot()
+
+	//runServer()
 
 }
 

@@ -156,12 +156,14 @@ Github: https://github.com/wmnnd/nginx-certbot
 Make changes to `init-letsencrypt.sh` - change example.org to cloudjonno.com
 
 Remove this section for cert validation
-```location / {
+```
+location / {
         proxy_pass  http://vidukavindaloo-go-www:8111;
         proxy_set_header    Host                $http_host;
         proxy_set_header    X-Real-IP           $remote_addr;
         proxy_set_header    X-Forwarded-For     $proxy_add_x_forwarded_for;
-    }```
+    }
+```
 
 Run `./init-letsencrypt.sh`
 
