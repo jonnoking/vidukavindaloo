@@ -10,6 +10,7 @@ type Teams struct {
 	Teams map[int]Team `json:"teams"`
 }
 
+// New Create a new team
 func (p *Teams) New(teams []Team) {
 	ts := map[int]Team{}
 	for _, team := range teams {
@@ -18,6 +19,7 @@ func (p *Teams) New(teams []Team) {
 	p.Teams = ts
 }
 
+// GetTeamByName Returns a team details via a team name
 func (p *Teams) GetTeamByName(name string) (Team, error) {
 	var ret Team
 
@@ -29,12 +31,13 @@ func (p *Teams) GetTeamByName(name string) (Team, error) {
 	return ret, fmt.Errorf("No team called %s found", name)
 }
 
+// GetTeamByCode Returns a team details via a team code
 func (p *Teams) GetTeamByCode(code int) (Team, error) {
 	var ret Team
 
 	team, found := p.Teams[code]
 	if !found {
-		return ret, fmt.Errorf("No team found with code %s", code)
+		return ret, fmt.Errorf("No team found with code %d", code)
 	}
 
 	return team, nil

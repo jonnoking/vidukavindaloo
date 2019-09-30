@@ -5,8 +5,8 @@ import (
 	"github.com/jonnoking/vidukavindaloo/utils/cache"
 	"io/ioutil"
 	"log"
-	"net/http"
-	"time"
+	// "net/http"
+	// "time"
 )
 
 func LoadBootsrapFromCache() ([]byte, error) {
@@ -18,33 +18,42 @@ func LoadBootsrapFromCache() ([]byte, error) {
 }
 
 func RefreshBootstrap() map[string]interface{} {
-	fplBootsrapURL := "https://fantasy.premierleague.com/api/bootstrap-static/"
+	// fplBootsrapURL := "https://fantasy.premierleague.com/api/bootstrap-static/"
 
-	fplClient := http.Client{
-		Timeout: time.Second * 5,
-	}
+	// fplClient := http.Client{
+	// 	Timeout: time.Second * 5,
+	// }
 
-	req, err := http.NewRequest(http.MethodGet, fplBootsrapURL, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	// req, err := http.NewRequest(http.MethodGet, fplBootsrapURL, nil)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 
-	req.Header.Set("User-Agent", "cloudjonno")
+	// req.Header.Set("User-Agent", "cloudjonno")
 
-	res, getErr := fplClient.Do(req)
-	if getErr != nil {
-		log.Fatal(getErr)
-	}
+	// res, getErr := fplClient.Do(req)
+	// if getErr != nil {
+	// 	log.Fatal(getErr)
+	// }
 
-	sbErr := cache.SaveBodyToFile(res.Body, "./fpl-bootstrap.json")
-	if sbErr != nil {
-		log.Fatal(sbErr)
-	}
+	// sbErr := cache.SaveBodyToFile(res.Body, "./fpl-bootstrap.json")
+	// if sbErr != nil {
+	// 	log.Fatal(sbErr)
+	// }
 
-	byteValue, readErr := ioutil.ReadAll(res.Body)
+	// defer res.Body.Close()
+
+	// byteValue, readErr := ioutil.ReadAll(res.Body)
+	// if readErr != nil {
+	// 	log.Fatal(readErr)
+	// }
+
+	byteValue, readErr := ExecuteFPLGet("https://fantasy.premierleague.com/api/bootstrap-static/")
 	if readErr != nil {
 		log.Fatal(readErr)
 	}
+
+	cache.SaveByteArrayToFile(byteValue, "./fpl-bootstrap.json")
 
 	// fErr := ioutil.WriteFile("./fpl-bootstrap.json", byteValue, 0644)
 	// check(fErr)
@@ -52,7 +61,7 @@ func RefreshBootstrap() map[string]interface{} {
 	var result map[string]interface{}
 	json.Unmarshal([]byte(byteValue), &result)
 
-	defer res.Body.Close()
+	//
 
 	return result
 }

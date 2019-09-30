@@ -20,6 +20,16 @@ func SaveBodyToFile(body io.ReadCloser, filename string) error {
 	return nil
 }
 
+// SaveByteArrayToFile save byte array to file
+func SaveByteArrayToFile(b []byte, filename string) error {
+
+	fErr := ioutil.WriteFile(filename, b, 0644)
+	if fErr != nil {
+		return fErr
+	}
+	return nil
+}
+
 // doesn't work - look at closures?
 // func ReadJsonFromCache(i map[string]interface{}, filename string) (map[string]interface{}, error) {
 // 	c := i

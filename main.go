@@ -33,10 +33,16 @@ func init() {
 
 func main() {
 
-	// fpl.Load()
+	fpl.LoadFromLive()
 
-	// // t, _ := fpl.Teams.GetTeamByName("Southampton")
-	// // log.Println(t.Name)
+	// t, _ := fpl.Teams.GetTeamByName("Southampton")
+	// log.Println(t)
+
+	// log.Printf("Teams: %d \n", len(fpl.Teams.Teams))
+	// log.Printf("Phases: %d \n", len(fpl.Phases.Phases))
+	// log.Printf("Player Types: %d \n", len(fpl.PlayerTypes.PlayerTypes))
+	// log.Printf("Players: %d \n", len(fpl.Players.Players))
+	// log.Printf("Events: %d \n", len(fpl.Events.Events))
 
 	// mt, _ := fpl.GetMyTeam(1759299, fpl.Players, fpl.Teams, fpl.PlayerTypes)
 
@@ -63,7 +69,7 @@ func main() {
 	// //168399
 	// log.Println(fmt.Sprintf("%+v", wn))
 
-	fpl.GetScreenshot()
+	//fpl.GetScreenshot()
 
 	//runServer()
 

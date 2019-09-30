@@ -1,0 +1,163 @@
+{
+    "current": [
+        {
+            "event": 1,
+            "points": 107,
+            "total_points": 107,
+            "rank": 12291,
+            "rank_sort": 13116,
+            "overall_rank": 12291,
+            "bank": 0,
+            "value": 1000,
+            "event_transfers": 0,
+            "event_transfers_cost": 0,
+            "points_on_bench": 11
+        },
+        {
+            "event": 2,
+            "points": 44,
+            "total_points": 151,
+            "rank": 2191389,
+            "rank_sort": 2222744,
+            "overall_rank": 47507,
+            "bank": 0,
+            "value": 1003,
+            "event_transfers": 0,
+            "event_transfers_cost": 0,
+            "points_on_bench": 5
+        },
+        {
+            "event": 3,
+            "points": 46,
+            "total_points": 197,
+            "rank": 2765654,
+            "rank_sort": 2786908,
+            "overall_rank": 112330,
+            "bank": 0,
+            "value": 1006,
+            "event_transfers": 0,
+            "event_transfers_cost": 0,
+            "points_on_bench": 9
+        },
+        {
+            "event": 4,
+            "points": 59,
+            "total_points": 256,
+            "rank": 2658807,
+            "rank_sort": 2679684,
+            "overall_rank": 141374,
+            "bank": 0,
+            "value": 1008,
+            "event_transfers": 0,
+            "event_transfers_cost": 0,
+            "points_on_bench": 10
+        },
+        {
+            "event": 5,
+            "points": 37,
+            "total_points": 293,
+            "rank": 6006310,
+            "rank_sort": 6012819,
+            "overall_rank": 633148,
+            "bank": 0,
+            "value": 1009,
+            "event_transfers": 1,
+            "event_transfers_cost": 0,
+            "points_on_bench": 2
+        },
+        {
+            "event": 6,
+            "points": 68,
+            "total_points": 361,
+            "rank": 925720,
+            "rank_sort": 940897,
+            "overall_rank": 368398,
+            "bank": 0,
+            "value": 1008,
+            "event_transfers": 0,
+            "event_transfers_cost": 0,
+            "points_on_bench": 6
+        },
+        {
+            "event": 7,
+            "points": 53,
+            "total_points": 410,
+            "rank": 1496317,
+            "rank_sort": 1500254,
+            "overall_rank": 357977,
+            "bank": 2,
+            "value": 1010,
+            "event_transfers": 3,
+            "event_transfers_cost": 4,
+            "points_on_bench": 9
+        }
+    ],
+    "past": [
+        {
+            "season_name": "2006/07",
+            "total_points": 1558,
+            "rank": 496019
+        },
+        {
+            "season_name": "2007/08",
+            "total_points": 1997,
+            "rank": 178581
+        },
+        {
+            "season_name": "2008/09",
+            "total_points": 1879,
+            "rank": 125778
+        },
+        {
+            "season_name": "2009/10",
+            "total_points": 1821,
+            "rank": 933603
+        },
+        {
+            "season_name": "2010/11",
+            "total_points": 1740,
+            "rank": 866581
+        },
+        {
+            "season_name": "2011/12",
+            "total_points": 1882,
+            "rank": 489957
+        },
+        {
+            "season_name": "2012/13",
+            "total_points": 1574,
+            "rank": 1887856
+        },
+        {
+            "season_name": "2013/14",
+            "total_points": 1977,
+            "rank": 1127474
+        },
+        {
+            "season_name": "2014/15",
+            "total_points": 1894,
+            "rank": 614756
+        },
+        {
+            "season_name": "2015/16",
+            "total_points": 2172,
+            "rank": 72382
+        },
+        {
+            "season_name": "2016/17",
+            "total_points": 1737,
+            "rank": 2253750
+        },
+        {
+            "season_name": "2017/18",
+            "total_points": 1927,
+            "rank": 1787299
+        },
+        {
+            "season_name": "2018/19",
+            "total_points": 1935,
+            "rank": 2677888
+        }
+    ],
+    "chips": []
+}

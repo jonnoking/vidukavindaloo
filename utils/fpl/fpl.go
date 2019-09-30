@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/jonnoking/vidukavindaloo/models"
 	"github.com/jonnoking/vidukavindaloo/utils/cache"
@@ -14,13 +15,26 @@ import (
 var Players *models.Players
 var Teams *models.Teams
 var PlayerTypes *models.PlayerTypes
+var Events *models.Events
+var Phases *models.Phases
 
-func Load() {
+func LoadFromLive() {
+	bs := RefreshBootstrap()
+	Teams, _ = models.NewTeamsFromBootStrapMap(bs)
+	Players, _ = models.NewPlayersFromBootStrapMap(bs)
+	PlayerTypes, _ = models.NewPlayerTypesFromBootStrapMap(bs)
+	Events, _ = models.NewEventsFromBootStrapMap(bs)
+	Phases, _ = models.NewPhasesFromBootStrapMap(bs)
+}
+
+func LoadFromCache() {
 	// load globals
 	b, _ := LoadBootsrapFromCache()
 	Teams, _ = models.NewTeamsFromBootStrapByteArray(b)
 	Players, _ = models.NewPlayersFromBootStrapByteArray(b)
 	PlayerTypes, _ = models.NewPlayerTypesFromByteArray(b)
+	Events, _ = models.NewEventsFromBootStrapByteArray(b)
+	Phases, _ = models.NewPhasesFromByteArray(b)
 
 	//Teams := models.NewFPLTeams(t)
 
@@ -110,7 +124,7 @@ func RefershMyTeam(teamID int) (*models.MyTeam, error) {
 	myteam = models.MyTeam{}
 	json.Unmarshal([]byte(byteValue), &myteam)
 
-	cache.SaveBodyToFile(resp.Body, "./fpl-myteam.json")
+	cache.SaveBodyToFile(resp.Body, fmt.Sprintf("./fpl-%d-team.json", teamID))
 
 	return &myteam, nil
 }
@@ -119,4 +133,50 @@ func check(e error) {
 	if e != nil {
 		panic(e)
 	}
+}
+
+// func getEntryTransfers(teamID int, weekID int) (*models.EntryTransfers, error) {
+// 	b, err := ExecuteFPLGet(fmt.Sprintf("https://fantasy.premierleague.com/api/entry/%d/transfers/", teamID))
+
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
+
+// 	cache.SaveByteArrayToFile(b, fmt.Sprintf("fpl-%d-transfers.json", teamID))
+
+// 	// myteam = models.MyTeam{}
+// 	// json.Unmarshal(b, &myteam)
+
+// 	//cache.SaveBodyToFile(resp.Body, fmt.Sprintf("./fpl-%d-myteam-transfers.json", teamID))
+
+// }
+
+func ExecuteFPLGet(url string) ([]byte, error) {
+
+	apiURL := url
+
+	client := &http.Client{
+		Timeout: time.Second * 5,
+	}
+
+	r, _ := BuildFPLRequest(apiURL, "GET")
+
+	resp, respErr := client.Do(r)
+	if respErr != nil {
+		return nil, respErr
+	}
+
+	defer resp.Body.Close()
+
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("MyTeam : status code: %d - %s", resp.StatusCode, resp.Status)
+	}
+
+	byteValue, readErr := ioutil.ReadAll(resp.Body)
+	if readErr != nil {
+		//log.Fatal(readErr)
+		return nil, readErr
+	}
+
+	return byteValue, nil
 }

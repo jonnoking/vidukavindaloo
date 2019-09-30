@@ -6,12 +6,14 @@ import (
 
 // /api/my-team
 
+// MyTeam Object returned via /api/my-team/{team-id}
 type MyTeam struct {
 	Picks     []Picks   `json:"picks"`
 	Chips     []Chips   `json:"chips"`
 	Transfers Transfers `json:"transfers"`
 }
 
+// Transfers Status of my team transfers
 type Transfers struct {
 	Cost   int    `json:"cost"`
 	Status string `json:"status"`
@@ -21,6 +23,7 @@ type Transfers struct {
 	Value  int    `json:"value"`
 }
 
+// Chips Status of chips of my team
 type Chips struct {
 	StatusForEntry string `json:"status_for_entry"`
 	PlayedByEntry  []int  `json:"played_by_entry"`
@@ -31,8 +34,9 @@ type Chips struct {
 	ChipType       string `json:"chip_type"`
 }
 
+// Picks Players selected in my team
 type Picks struct {
-	PlayerID      int `json:"element"`
+	ElementID     int `json:"element"`
 	Player        Player
 	Team          Team
 	PlayerType    PlayerType

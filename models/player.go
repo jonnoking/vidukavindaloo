@@ -5,12 +5,13 @@ import (
 	s "strings"
 )
 
-// Players represents all players in the FPL
+// Players represents all players in the FPL via bootstrap
 type Players struct {
 	Players     map[int]Player `json:"players"`
 	PlayersByID map[int]Player `json:"players"`
 }
 
+// GetPlayerByFullName Get FPL element by name
 func (p *Players) GetPlayerByFullName(fullname string) (Player, error) {
 	var ret Player
 
@@ -22,6 +23,7 @@ func (p *Players) GetPlayerByFullName(fullname string) (Player, error) {
 	return ret, fmt.Errorf("No player called %s found", fullname)
 }
 
+// Player FPL player
 type Player struct {
 	ChanceOfPlayingNextRound int `json:"chance_of_playing_next_round"`
 	ChanceOfPlayingThisRound int `json:"chance_of_playing_this_round"`
