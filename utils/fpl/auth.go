@@ -3,6 +3,7 @@ package fpl
 import (
 	"encoding/json"
 	"errors"
+	"github.com/jonnoking/vidukavindaloo/utils/config"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -39,6 +40,7 @@ func BuildFPLRequest(apiURL string, method string) (*http.Request, error) {
 
 	if err != nil || vErr != nil || !isValid {
 		cookies, rcErr := RefreshCookies()
+		CacheCookies(cookies)
 		fplCookies = cookies
 		if rcErr != nil {
 			return nil, rcErr
@@ -49,7 +51,7 @@ func BuildFPLRequest(apiURL string, method string) (*http.Request, error) {
 
 	for cookieName, cookie := range fplCookies {
 		if cookieName != "elevate" {
-			log.Println(cookie.Name)
+			//log.Println(cookie.Name)
 			r.AddCookie(&http.Cookie{
 				Name:   cookie.Name,
 				Value:  cookie.Value,
@@ -72,10 +74,10 @@ func RefreshCookies() (map[string]FPLCookie, error) {
 	loginURL := "https://users.premierleague.com/accounts/login/"
 
 	data := url.Values{}
-	data.Set("password", "")
-	data.Set("login", "jonno.king@gmail.com")
-	data.Set("redirect_uri", "https://fantasy.premierleague.com/")
-	data.Set("app", "plfpl-web")
+	data.Set("password", config.FPLLogin.Password)
+	data.Set("login", config.FPLLogin.User)
+	data.Set("redirect_uri", config.FPLLogin.RedirectURI)
+	data.Set("app", config.FPLLogin.App)
 
 	u, _ := url.ParseRequestURI(loginURL)
 	log.Println("URL: ", data.Encode())

@@ -6,33 +6,36 @@ import ()
 
 // Entry tbc
 type Entry struct {
-	ID                         int            `json:"id"`
-	JoinedTime                 string         `json:"joined_time"`
-	StartedEvent               int            `json:"started_event"`
-	FavouriteTeam              int            `json:"favourite_team"`
-	PlayerFirstName            string         `json:"player_first_name"`
-	PlayerLastName             string         `json:"player_last_name"`
-	PlayerRegionID             int            `json:"player_region_id"`
-	PlayerRegionName           string         `json:"player_region_name"`
-	PlayerRegionISOCodeShort   string         `json:"player_region_iso_code_short"`
-	PlayerRegionISOCodeLong    string         `json:"player_region_iso_code_long"`
-	SummaryOverallPoints       int            `json:"summary_overall_points"`
-	SummaryOverallRank         int            `json:"summary_overall_rank"`
-	SummaryEventPoints         int            `json:"summary_event_points"`
-	SummaryEventRank           int            `json:"summary_event_rank"`
-	CurrentEvent               int            `json:"current_event"`
-	Leagues                    []EntryLeagues `json:"leagues"`
-	Name                       string         `json:"name"`
-	Kit                        string         `json:"kit"`
-	LastDeadlineBank           int            `json:"last_deadline_bank"`
-	LastDeadlineValue          int            `json:"last_deadline_value"`
-	LastDeadlineTotalTransfers int            `json:"last_deadline_total_transfers"`
+	ID                         int             `json:"id"`
+	JoinedTime                 string          `json:"joined_time"`
+	StartedEvent               int             `json:"started_event"`
+	FavouriteTeam              int             `json:"favourite_team"`
+	PlayerFirstName            string          `json:"player_first_name"`
+	PlayerLastName             string          `json:"player_last_name"`
+	PlayerRegionID             int             `json:"player_region_id"`
+	PlayerRegionName           string          `json:"player_region_name"`
+	PlayerRegionISOCodeShort   string          `json:"player_region_iso_code_short"`
+	PlayerRegionISOCodeLong    string          `json:"player_region_iso_code_long"`
+	SummaryOverallPoints       int             `json:"summary_overall_points"`
+	SummaryOverallRank         int             `json:"summary_overall_rank"`
+	SummaryEventPoints         int             `json:"summary_event_points"`
+	SummaryEventRank           int             `json:"summary_event_rank"`
+	CurrentEvent               int             `json:"current_event"`
+	Leagues                    []EntryLeagues  `json:"leagues"`
+	Name                       string          `json:"name"`
+	Kit                        string          `json:"kit"`
+	LastDeadlineBank           int             `json:"last_deadline_bank"`
+	LastDeadlineValue          int             `json:"last_deadline_value"`
+	LastDeadlineTotalTransfers int             `json:"last_deadline_total_transfers"`
+	History                    *EntryHistory   `json:"history"`
+	Transfers                  *EntryTransfers `json:"transfers"`
+	EventPicks                 *EntryPicksMap  `json:"event_picks"`
 }
 
 // EntryLeagues tbc
 type EntryLeagues struct {
-	ClassicLeagues []ClassicLeague
-	H2HLeagues     []H2HLeague
+	ClassicLeagues []ClassicLeague `json:"classic_leagues"`
+	H2HLeagues     []H2HLeague     `json:"h2h_leagues"`
 }
 
 // ClassicLeague tbc
@@ -96,12 +99,18 @@ type EventPastYear struct {
 
 // https://fantasy.premierleague.com/api/entry/1759299/event/6/picks/
 
+// EntryPicksMap tbc
+type EntryPicksMap struct {
+	EntryEventPicks map[string]*EntryPicks `json:"entry_event_picks"`
+}
+
 // EntryPicks tbc
 type EntryPicks struct {
 	ActiveChip    ActiveChip      `json:"active_chip"`
 	AutomaticSubs []AutomaticSubs `json:"automatic_subs"`
 	EntryHistory  EntryHistory    `json:"entry_history"`
 	Picks         []Pick          `json:"picks"`
+	Detail        string          `json:"detail"`
 }
 
 // ActiveChip tbc
@@ -112,9 +121,7 @@ type ActiveChip struct {
 type AutomaticSubs struct {
 	Entry      int `json:"entry"`
 	ElementIn  int `json:"element_in"`
-	PlayerIn   Player
 	ElementOut int `json:"element_out"`
-	PlayerOut  Player
 	Event      int `json:"event"`
 }
 
@@ -135,10 +142,7 @@ type EventHistory struct {
 
 // Pick tbc
 type Pick struct {
-	Element       int `json:"element"`
-	Player        Player
-	Team          Team
-	PlayerType    PlayerType
+	Element       int  `json:"element"`
 	Position      int  `json:"position"`
 	Multiplier    int  `json:"multiplier"`
 	IsCaptain     bool `json:"is_captain"`

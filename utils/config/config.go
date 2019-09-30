@@ -9,6 +9,7 @@ import (
 type Config struct {
 	HTTP      HTTPConfig
 	FPL       FPLConfig
+	FPLLogin  FPLLogin
 	DebugMode bool
 	UserRoles []string
 	MaxUsers  int
@@ -18,6 +19,13 @@ type Config struct {
 type FPLConfig struct {
 	Me       int
 	VVLeague int
+}
+
+type FPLLogin struct {
+	User        string
+	Password    string
+	RedirectURI string
+	App         string
 }
 
 // HTTPConfig http/s defaults
@@ -45,6 +53,12 @@ func New() *Config {
 		FPL: FPLConfig{
 			Me:       getEnvAsInt("FPL_ME", -1),
 			VVLeague: getEnvAsInt("FPL_VV_LEAGUE", -1),
+		},
+		FPLLogin: FPLLogin{
+			User:        getEnv("FPL_USER", "jonno.king@gmail.com"),
+			Password:    getEnv("FPL_PASSWORD", ""),
+			RedirectURI: getEnv("FPL_REDIRECT_URI", "https://fantasy.premierleague.com/"),
+			App:         getEnv("FPL_APP", "plfpl-web"),
 		},
 		DebugMode: getEnvAsBool("DEBUG_MODE", true),
 		UserRoles: getEnvAsSlice("USER_ROLES", []string{"admin"}, ","),

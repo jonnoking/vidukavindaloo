@@ -3,3 +3,6 @@ vv-autocert
 .vscode
 vidukavindaloo
 main
+fpl-auth-cache.json
+fpl-auth-cache-o.json
+fpl-json

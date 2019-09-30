@@ -1,6 +1,7 @@
 package main
 
 import (
+	//"github.com/jonnoking/vidukavindaloo/models"
 	//"bytes"
 	"context"
 	"crypto/tls"
@@ -34,6 +35,11 @@ func init() {
 func main() {
 
 	fpl.LoadFromLive()
+	entry, _ := fpl.GetEntry(4719576)
+	println(entry.Name)
+
+	ef, _ := fpl.GetCompleteEntry(1759299)
+	println(ef)
 
 	// t, _ := fpl.Teams.GetTeamByName("Southampton")
 	// log.Println(t)
