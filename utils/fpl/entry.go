@@ -3,10 +3,10 @@ package fpl
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/jonnoking/vidukavindaloo/utils/cache"
+	"github.com/jonnoking/vidukavindaloo/utils/fpl/models"
 	//	"io/ioutil"
 	"log"
-
-	"../cache"
 )
 
 func GetEntryFromCache(teamID int, players *models.Players, teams *models.Teams, playerTypes *models.PlayerTypes) (*models.Entry, error) {

@@ -18,6 +18,12 @@ var PlayerTypes *models.PlayerTypes
 var Events *models.Events
 var Phases *models.Phases
 
+func init() {
+
+	// check if refresh is needed
+	LoadFromLive()
+}
+
 func LoadFromLive() {
 	bs := RefreshBootstrap()
 	Teams, _ = models.NewTeamsFromBootStrapMap(bs)

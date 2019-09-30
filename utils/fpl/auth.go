@@ -69,15 +69,17 @@ func BuildFPLRequest(apiURL string, method string) (*http.Request, error) {
 // RefreshCookies get auth cooies from FPL
 func RefreshCookies() (map[string]FPLCookie, error) {
 
+	cfg := config.New()
+
 	fplCookies := make(map[string]FPLCookie)
 
 	loginURL := "https://users.premierleague.com/accounts/login/"
 
 	data := url.Values{}
-	data.Set("password", config.FPLLogin.Password)
-	data.Set("login", config.FPLLogin.User)
-	data.Set("redirect_uri", config.FPLLogin.RedirectURI)
-	data.Set("app", config.FPLLogin.App)
+	data.Set("password", cfg.FPLLogin.Password)
+	data.Set("login", cfg.FPLLogin.User)
+	data.Set("redirect_uri", cfg.FPLLogin.RedirectURI)
+	data.Set("app", cfg.FPLLogin.App)
 
 	u, _ := url.ParseRequestURI(loginURL)
 	log.Println("URL: ", data.Encode())

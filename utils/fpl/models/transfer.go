@@ -1,7 +1,6 @@
 package models
 
 import ()
-import "github.com/jonnoking/vidukavindaloo/utils/fpl"
 
 //https://fantasy.premierleague.com/api/entry/4719576/transfers/
 
@@ -24,8 +23,4 @@ type Transfer struct {
 	Entry          int    `json:"entry"`
 	Event          int    `json:"event"`
 	Time           string `json:"time"`
-}
-
-func (t *Transfer) getPlayerIn() Player {
-	return fpl.Players.PlayersByID[t.ElementIn]
 }
