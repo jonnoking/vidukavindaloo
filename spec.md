@@ -16,7 +16,10 @@
 - [ ] FPL - get snapshot of each team in league
 - [ ] FPL - scheduled event to capture each team
 - [ ] FPL - get team per league
-- [ ] FPL - get transfers per team
+- [x] FPL - get transfers per team
+- [ ] FPL - get fixtures
+- [ ] FPL - get event - https://fantasy.premierleague.com/api/event/3/live/
+
 
 ## Fantasy Premier League
 

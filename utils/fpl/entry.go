@@ -54,7 +54,7 @@ func GetEntry(teamID int) (*models.Entry, error) {
 
 	var entry models.Entry
 
-	byteValue, readErr := ExecuteFPLGet(fmt.Sprintf("https://fantasy.premierleague.com/api/entry/%d/", teamID))
+	byteValue, readErr := ExecuteFPLGet(GetEntryAPI(teamID))
 	if readErr != nil {
 		log.Fatal(readErr)
 	}
