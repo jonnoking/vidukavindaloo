@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/jonnoking/vidukavindaloo/utils/cache"
+	"github.com/jonnoking/vidukavindaloo/utils/fpl/config"
 	"github.com/jonnoking/vidukavindaloo/utils/fpl/models"
 	//	"io/ioutil"
 	"log"
@@ -43,18 +44,18 @@ func GetCompleteEntry(teamID int) (*models.Entry, error) {
 
 	byteValue, _ := json.Marshal(entry)
 
-	cache.SaveByteArrayToFile(byteValue, fmt.Sprintf("./fpl-json/fpl-entryfull-%d.json", teamID))
+	cache.SaveByteArrayToFile(byteValue, config.GetEntryFullFilename(teamID))
 
 	return entry, nil
 
 }
 
 //GetEntry retrive my team from FPL
-func GetEntry(teamID int) (*models.Entry, error) {
+func GetEntry(entryID int) (*models.Entry, error) {
 
 	var entry models.Entry
 
-	byteValue, readErr := ExecuteFPLGet(GetEntryAPI(teamID))
+	byteValue, readErr := ExecuteFPLGet(GetEntryAPI(entryID))
 	if readErr != nil {
 		log.Fatal(readErr)
 	}
@@ -62,17 +63,17 @@ func GetEntry(teamID int) (*models.Entry, error) {
 	entry = models.Entry{}
 	json.Unmarshal([]byte(byteValue), &entry)
 
-	cache.SaveByteArrayToFile(byteValue, fmt.Sprintf("./fpl-json/fpl-entry-%d.json", teamID))
+	cache.SaveByteArrayToFile(byteValue, config.GetEntryFilename(teamID))
 
 	return &entry, nil
 }
 
 //GetEntryHistory retrive my team from FPL
-func GetEntryHistory(teamID int) (*models.EntryHistory, error) {
+func GetEntryHistory(entryID int) (*models.EntryHistory, error) {
 
 	var entryHistory models.EntryHistory
 
-	byteValue, readErr := ExecuteFPLGet(fmt.Sprintf("https://fantasy.premierleague.com/api/entry/%d/history/", teamID))
+	byteValue, readErr := ExecuteFPLGet(config.GetEntryHistoryAPI(entryID))
 	if readErr != nil {
 		log.Fatal(readErr)
 	}
@@ -80,18 +81,18 @@ func GetEntryHistory(teamID int) (*models.EntryHistory, error) {
 	entryHistory = models.EntryHistory{}
 	json.Unmarshal([]byte(byteValue), &entryHistory)
 
-	cache.SaveByteArrayToFile(byteValue, fmt.Sprintf("./fpl-json/fpl-entryhistory-%d.json", teamID))
+	cache.SaveByteArrayToFile(byteValue, config.GetEntryHistoryFilename(entryID))
 
 	return &entryHistory, nil
 }
 
 //GetEntryTransfers retrive my team from FPL
-func GetEntryTransfers(teamID int) (*models.EntryTransfers, error) {
+func GetEntryTransfers(entryID int) (*models.EntryTransfers, error) {
 
 	var entryTransfers models.EntryTransfers
 	var t []models.Transfer
 
-	byteValue, readErr := ExecuteFPLGet(fmt.Sprintf("https://fantasy.premierleague.com/api/entry/%d/transfers/", teamID))
+	byteValue, readErr := ExecuteFPLGet(config.GetEntryTransfersAPI(entryID))
 	if readErr != nil {
 		log.Fatal(readErr)
 	}
@@ -103,7 +104,7 @@ func GetEntryTransfers(teamID int) (*models.EntryTransfers, error) {
 
 	entryTransfers.Transfers = t
 
-	cache.SaveByteArrayToFile(byteValue, fmt.Sprintf("./fpl-json/fpl-entrytransfers-%d.json", teamID))
+	cache.SaveByteArrayToFile(byteValue, config.GetEntryTransfersFilename(entryID))
 
 	log.Printf("Transfers 1 Length: %d\n", len(entryTransfers.Transfers))
 
@@ -111,11 +112,11 @@ func GetEntryTransfers(teamID int) (*models.EntryTransfers, error) {
 }
 
 //GetEntryPicks retrive my team from FPL
-func GetEntryPicks(teamID int, eventID int) (*models.EntryPicks, error) {
+func GetEntryPicks(entryID int, eventID int) (*models.EntryPicks, error) {
 
 	var entryPicks models.EntryPicks
 
-	byteValue, readErr := ExecuteFPLGet(fmt.Sprintf("https://fantasy.premierleague.com/api/entry/%d/event/%d/picks/", teamID, eventID))
+	byteValue, readErr := ExecuteFPLGet(config.GetEntryGameweekAPI(entryID, eventID))
 	if readErr != nil {
 		log.Fatal(readErr)
 	}
@@ -123,15 +124,15 @@ func GetEntryPicks(teamID int, eventID int) (*models.EntryPicks, error) {
 	entryPicks = models.EntryPicks{}
 	json.Unmarshal([]byte(byteValue), &entryPicks)
 
-	cache.SaveByteArrayToFile(byteValue, fmt.Sprintf("./fpl-json/fpl-picks-%d-%d.json", teamID, eventID))
+	cache.SaveByteArrayToFile(byteValue, config.GetEntryGameWeekFilename(entryID, eventID))
 
 	return &entryPicks, nil
 }
 
 //GetAllEntryPicks Get all 38 event picks
-func GetAllEntryPicks(teamID int) ([]*models.EntryPicks, models.EntryPicksMap, error) {
+func GetAllEntryPicks(entryID int) ([]*models.EntryPicks, models.EntryPicksMap, error) {
 
-	maxEvent := MAX_EVENT_WEEK
+	maxEvent := config.MAX_EVENT_WEEK
 
 	eps := []*models.EntryPicks{}
 
@@ -149,7 +150,7 @@ func GetAllEntryPicks(teamID int) ([]*models.EntryPicks, models.EntryPicksMap, e
 
 	byteValue, _ := json.Marshal(eps)
 
-	cache.SaveByteArrayToFile(byteValue, fmt.Sprintf("./fpl-json/fpl-picksall-%d.json", teamID))
+	cache.SaveByteArrayToFile(byteValue, config.GetEntryGameWeekAllFilename(entryID))
 
 	return eps, etm, nil
 }

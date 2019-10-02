@@ -3,6 +3,7 @@ package fpl
 import (
 	"encoding/json"
 	"github.com/jonnoking/vidukavindaloo/utils/cache"
+	"github.com/jonnoking/vidukavindaloo/utils/config"
 	"io/ioutil"
 	"log"
 	// "net/http"
@@ -48,12 +49,12 @@ func RefreshBootstrap() map[string]interface{} {
 	// 	log.Fatal(readErr)
 	// }
 
-	byteValue, readErr := ExecuteFPLGet("https://fantasy.premierleague.com/api/bootstrap-static/")
+	byteValue, readErr := ExecuteFPLGet(config.GetBootstrapAPI())
 	if readErr != nil {
 		log.Fatal(readErr)
 	}
 
-	cache.SaveByteArrayToFile(byteValue, "./fpl-bootstrap.json")
+	cache.SaveByteArrayToFile(byteValue, config.GetBootrapFilename())
 
 	// fErr := ioutil.WriteFile("./fpl-bootstrap.json", byteValue, 0644)
 	// check(fErr)

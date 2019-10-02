@@ -10,8 +10,6 @@ import (
 	"github.com/jonnoking/vidukavindaloo/utils/fpl/models"
 )
 
-const MAX_EVENT_WEEK = 7
-
 var Players *models.Players
 var Teams *models.Teams
 var PlayerTypes *models.PlayerTypes
@@ -92,22 +90,6 @@ func check(e error) {
 		panic(e)
 	}
 }
-
-// func getEntryTransfers(teamID int, weekID int) (*models.EntryTransfers, error) {
-// 	b, err := ExecuteFPLGet(fmt.Sprintf("https://fantasy.premierleague.com/api/entry/%d/transfers/", teamID))
-
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-
-// 	cache.SaveByteArrayToFile(b, fmt.Sprintf("fpl-%d-transfers.json", teamID))
-
-// 	// myteam = models.MyTeam{}
-// 	// json.Unmarshal(b, &myteam)
-
-// 	//cache.SaveBodyToFile(resp.Body, fmt.Sprintf("./fpl-%d-myteam-transfers.json", teamID))
-
-// }
 
 func ExecuteFPLGet(url string) ([]byte, error) {
 
