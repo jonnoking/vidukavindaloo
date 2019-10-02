@@ -1,4 +1,4 @@
-package fpl
+package api
 
 import (
 	"encoding/json"

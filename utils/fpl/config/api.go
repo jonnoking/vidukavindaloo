@@ -35,6 +35,10 @@ func GetAPI() *FPLAPI {
 	}
 }
 
+func GetBoostrapAPI() string {
+	return GetAPI().Bootstrap
+}
+
 func GetEntryAPI(entryID int) string {
 	return str.Replace(GetAPI().Entry, ENTRY_ID, strc.Itoa(entryID), 1)
 }

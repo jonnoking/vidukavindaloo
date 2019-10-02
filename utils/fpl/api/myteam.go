@@ -1,8 +1,8 @@
-package fpl
+package api
 
 import (
 	"encoding/json"
-	"fmt"
+	//"fmt"
 	"github.com/jonnoking/vidukavindaloo/utils/fpl/config"
 	"io/ioutil"
 	"log"

@@ -1,6 +1,7 @@
 package main
 
 import (
+	api "github.com/jonnoking/vidukavindaloo/utils/fpl/api"
 	//"github.com/jonnoking/vidukavindaloo/models"
 	//"bytes"
 	"context"
@@ -35,10 +36,10 @@ func init() {
 func main() {
 
 	fpl.LoadFromLive()
-	entry, _ := fpl.GetEntry(4719576)
+	entry, _ := api.GetEntry(4719576)
 	println(entry.Name)
 
-	ef, _ := fpl.GetCompleteEntry(1759299)
+	ef, _ := api.GetCompleteEntry(1759299)
 	println(ef)
 
 	// t, _ := fpl.Teams.GetTeamByName("Southampton")

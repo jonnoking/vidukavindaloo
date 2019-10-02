@@ -1,4 +1,4 @@
-package fpl
+package api
 
 import (
 	"encoding/json"
@@ -55,7 +55,7 @@ func GetEntry(entryID int) (*models.Entry, error) {
 
 	var entry models.Entry
 
-	byteValue, readErr := ExecuteFPLGet(GetEntryAPI(entryID))
+	byteValue, readErr := ExecuteFPLGet(config.GetEntryAPI(entryID))
 	if readErr != nil {
 		log.Fatal(readErr)
 	}
@@ -63,7 +63,7 @@ func GetEntry(entryID int) (*models.Entry, error) {
 	entry = models.Entry{}
 	json.Unmarshal([]byte(byteValue), &entry)
 
-	cache.SaveByteArrayToFile(byteValue, config.GetEntryFilename(teamID))
+	cache.SaveByteArrayToFile(byteValue, config.GetEntryFilename(entryID))
 
 	return &entry, nil
 }
@@ -140,7 +140,7 @@ func GetAllEntryPicks(entryID int) ([]*models.EntryPicks, models.EntryPicksMap, 
 	etm.EntryEventPicks = map[string]*models.EntryPicks{}
 
 	for i := 1; i <= maxEvent; i++ {
-		ep, e := GetEntryPicks(teamID, i)
+		ep, e := GetEntryPicks(entryID, i)
 		if e != nil {
 			return nil, etm, e
 		}

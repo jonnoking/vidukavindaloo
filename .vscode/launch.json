@@ -9,7 +9,7 @@
       "type": "go",
       "request": "launch",
       "mode": "auto",
-      "program": "~/go/src/github.com/jonnoking/vidukavindaloo/utils/FPL/fpl.go",
+      "program": "~/go/src/github.com/jonnoking/vidukavindaloo/main.go",
       "env": {},
       "args": []
     }
