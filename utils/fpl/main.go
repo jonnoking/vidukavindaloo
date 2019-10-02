@@ -1,11 +1,7 @@
 package fpl
 
 import (
-	"fmt"
-	"io/ioutil"
-	//	"log"
-
-	"github.com/jonnoking/vidukavindaloo/utils/fpl/api"
+	api "github.com/jonnoking/vidukavindaloo/utils/fpl/api"
 	"github.com/jonnoking/vidukavindaloo/utils/fpl/models"
 )
 
@@ -21,7 +17,7 @@ func init() {
 }
 
 func LoadFromLive() {
-	bs := RefreshBootstrap()
+	bs := api.RefreshBootstrap()
 	Teams, _ = models.NewTeamsFromBootStrapMap(bs)
 	Players, _ = models.NewPlayersFromBootStrapMap(bs)
 	PlayerTypes, _ = models.NewPlayerTypesFromBootStrapMap(bs)
@@ -31,7 +27,7 @@ func LoadFromLive() {
 
 func LoadFromCache() {
 	// load globals
-	b, _ := LoadBootsrapFromCache()
+	b, _ := api.LoadBootsrapFromCache()
 	Teams, _ = models.NewTeamsFromBootStrapByteArray(b)
 	Players, _ = models.NewPlayersFromBootStrapByteArray(b)
 	PlayerTypes, _ = models.NewPlayerTypesFromByteArray(b)

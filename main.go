@@ -1,12 +1,10 @@
 package main
 
 import (
-	api "github.com/jonnoking/vidukavindaloo/utils/fpl/api"
-	//"github.com/jonnoking/vidukavindaloo/models"
-	//"bytes"
 	"context"
 	"crypto/tls"
 	"fmt"
+	api "github.com/jonnoking/vidukavindaloo/utils/fpl/api"
 
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
@@ -37,10 +35,12 @@ func main() {
 
 	fpl.LoadFromLive()
 	entry, _ := api.GetEntry(4719576)
-	println(entry.Name)
+	fmt.Printf("Leagues: %d\n", len(entry.Leagues))
+	fmt.Println(entry.Name)
 
 	ef, _ := api.GetCompleteEntry(1759299)
-	println(ef)
+	fmt.Printf("Leagues: %d\n", len(ef.Leagues))
+	fmt.Println(ef)
 
 	// t, _ := fpl.Teams.GetTeamByName("Southampton")
 	// log.Println(t)

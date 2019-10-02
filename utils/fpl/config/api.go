@@ -23,15 +23,15 @@ func GetAPI() *FPLAPI {
 	return &FPLAPI{
 		Bootstrap:      "https://fantasy.premierleague.com/api/bootstrap-static/",
 		Fixtures:       "https://fantasy.premierleague.com/api/fixtures/",
-		Element:        "https://fantasy.premierleague.com/api/element-summary/{ELEMENT_ID}/",
-		LeagueClassic:  "https://fantasy.premierleague.com/api/leagues-classic/{LEAGUE_ID}/standings/",
-		LeagueH2H:      "https://fantasy.premierleague.com/api/leagues-h2h/{LEAGUE_ID}/standings/",
-		Entry:          "https://fantasy.premierleague.com/api/entry/{ENTRY_ID}/",
-		EntryHistory:   "https://fantasy.premierleague.com/api/entry/{ENTRY_ID}/history/",
-		EntryGameweek:  "https://fantasy.premierleague.com/api/entry/{ENTRY_ID}/event/{EVENT_ID}/",
-		EntryTransfers: "https://fantasy.premierleague.com/api/entry/{ENTRY_ID}/transfers/",
-		MyTeam:         "https://fantasy.premierleague.com/api/my-team/{ENTRY_ID}/",
-		GameWeek:       "https://fantasy.premierleague.com/api/event/{EVENT_ID}/live/",
+		Element:        "https://fantasy.premierleague.com/api/element-summary/{element_id}/",
+		LeagueClassic:  "https://fantasy.premierleague.com/api/leagues-classic/{league_id}/standings/",
+		LeagueH2H:      "https://fantasy.premierleague.com/api/leagues-h2h/{league_id}/standings/",
+		Entry:          "https://fantasy.premierleague.com/api/entry/{entry_id}/",
+		EntryHistory:   "https://fantasy.premierleague.com/api/entry/{entry_id}/history/",
+		EntryGameweek:  "https://fantasy.premierleague.com/api/entry/{entry_id}/event/{event_id}/picks/",
+		EntryTransfers: "https://fantasy.premierleague.com/api/entry/{entry_id}/transfers/",
+		MyTeam:         "https://fantasy.premierleague.com/api/my-team/{entry_id}/",
+		GameWeek:       "https://fantasy.premierleague.com/api/event/{entry_id}/live/",
 	}
 }
 

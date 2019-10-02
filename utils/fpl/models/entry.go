@@ -101,7 +101,7 @@ type EventPastYear struct {
 
 // EntryPicksMap tbc
 type EntryPicksMap struct {
-	EntryEventPicks map[string]*EntryPicks `json:"entry_event_picks"`
+	EntryEventPicks map[string]EntryPicks `json:"entry_event_picks"`
 }
 
 // EntryPicks tbc

@@ -8,6 +8,7 @@ import (
 	"github.com/jonnoking/vidukavindaloo/utils/fpl/models"
 	//	"io/ioutil"
 	"log"
+	"strings"
 )
 
 func GetEntryFromCache(teamID int, players *models.Players, teams *models.Teams, playerTypes *models.PlayerTypes) (*models.Entry, error) {
@@ -26,17 +27,12 @@ func GetEntryFromCache(teamID int, players *models.Players, teams *models.Teams,
 }
 
 //GetCompleteEntry Get complete entry details
-func GetCompleteEntry(teamID int) (*models.Entry, error) {
+func GetCompleteEntry(entryID int) (*models.Entry, error) {
 
-	entry, _ := GetEntry(teamID)
-	history, _ := GetEntryHistory(teamID)
-	transfers, _ := GetEntryTransfers(teamID)
-	_, picks, _ := GetAllEntryPicks(teamID)
-
-	// t, _ := CreateTransferMap(transfers)
-
-	// bv, _ := json.Marshal(t)
-	// cache.SaveByteArrayToFile(bv, fmt.Sprintf("./fpl-json/fpl-transfermap-%d.json", teamID))
+	entry, _ := GetEntry(entryID)
+	history, _ := GetEntryHistory(entryID)
+	transfers, _ := GetEntryTransfers(entryID)
+	_, picks, _ := GetAllEntryPicks(entryID)
 
 	entry.History = history
 	entry.Transfers = transfers
@@ -44,10 +40,9 @@ func GetCompleteEntry(teamID int) (*models.Entry, error) {
 
 	byteValue, _ := json.Marshal(entry)
 
-	cache.SaveByteArrayToFile(byteValue, config.GetEntryFullFilename(teamID))
+	cache.SaveByteArrayToFile(byteValue, config.GetEntryFullFilename(entryID))
 
 	return entry, nil
-
 }
 
 //GetEntry retrive my team from FPL
@@ -112,13 +107,13 @@ func GetEntryTransfers(entryID int) (*models.EntryTransfers, error) {
 }
 
 //GetEntryPicks retrive my team from FPL
-func GetEntryPicks(entryID int, eventID int) (*models.EntryPicks, error) {
+func GetEntryPicks(entryID int, eventID int) (models.EntryPicks, error) {
 
 	var entryPicks models.EntryPicks
 
 	byteValue, readErr := ExecuteFPLGet(config.GetEntryGameweekAPI(entryID, eventID))
 	if readErr != nil {
-		log.Fatal(readErr)
+		return entryPicks, readErr
 	}
 
 	entryPicks = models.EntryPicks{}
@@ -126,22 +121,26 @@ func GetEntryPicks(entryID int, eventID int) (*models.EntryPicks, error) {
 
 	cache.SaveByteArrayToFile(byteValue, config.GetEntryGameWeekFilename(entryID, eventID))
 
-	return &entryPicks, nil
+	return entryPicks, nil
 }
 
 //GetAllEntryPicks Get all 38 event picks
-func GetAllEntryPicks(entryID int) ([]*models.EntryPicks, models.EntryPicksMap, error) {
+func GetAllEntryPicks(entryID int) ([]models.EntryPicks, models.EntryPicksMap, error) {
 
 	maxEvent := config.MAX_EVENT_WEEK
 
-	eps := []*models.EntryPicks{}
+	eps := []models.EntryPicks{}
 
 	etm := models.EntryPicksMap{}
-	etm.EntryEventPicks = map[string]*models.EntryPicks{}
+	etm.EntryEventPicks = map[string]models.EntryPicks{}
 
 	for i := 1; i <= maxEvent; i++ {
 		ep, e := GetEntryPicks(entryID, i)
 		if e != nil {
+			// break if picks returns 404 as the event week is not active
+			if strings.Contains(e.Error(), "status code: 404") {
+				break
+			}
 			return nil, etm, e
 		}
 		eps = append(eps, ep)

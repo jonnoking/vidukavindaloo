@@ -5,7 +5,7 @@ import (
 )
 
 func GetBootstrapFilename() string {
-	return fmt.Sprintf("%s/%d-bootstrap.json", FOLDER)
+	return fmt.Sprintf("%s/bootstrap.json", FOLDER)
 }
 
 func GetEntryFilename(entryID int) string {
