@@ -32,7 +32,6 @@ func LoadFromCache() {
 	PlayerTypes, _ = models.NewPlayerTypesFromByteArray(b)
 	Events, _ = models.NewEventsFromBootStrapByteArray(b)
 	Phases, _ = models.NewPhasesFromByteArray(b)
-
 }
 
 func main() {

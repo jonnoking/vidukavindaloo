@@ -116,6 +116,16 @@ Learning Cloud Native Go
 https://medium.com/learning-cloud-native-go/lets-get-it-started-dc4634ef03b
 
 
+## Goroutines
+
+https://nathanleclaire.com/blog/2014/02/15/how-to-wait-for-all-goroutines-to-finish-executing-before-continuing/
+
+https://gobyexample.com/waitgroups
+
+http://www.golang-book.com/books/intro/10
+
+## other
+
 server {
     listen 80;
     server_name cloudjonno.com;

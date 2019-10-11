@@ -95,6 +95,7 @@ func GetLeaguesChannels() {
 
 	}
 
+	// as channel finishes
 	go func() {
 		for entryResponse := range entries {
 			VVLeague[entryResponse.EntryID] = entryResponse.Entry
