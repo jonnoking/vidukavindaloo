@@ -19,6 +19,9 @@
 - [x] FPL - get transfers per team
 - [ ] FPL - get fixtures
 - [ ] FPL - get event - https://fantasy.premierleague.com/api/event/3/live/
+- [ ] FPL - move file utils to FPL package
+- [ ] FPL - update package init to be cleaner - see "Learning Cloud Native Go" article
+- [ ] FPL - update get player methods to use cached info from bootstrap
 
 
 ## Fantasy Premier League

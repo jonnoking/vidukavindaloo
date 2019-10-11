@@ -9,8 +9,8 @@ type FPLAPI struct {
 	Bootstrap      string
 	Fixtures       string
 	Element        string
-	LeagueClassic  string
-	LeagueH2H      string
+	ClassicLeague  string
+	H2HLeague      string
 	Entry          string
 	EntryHistory   string
 	EntryGameweek  string
@@ -24,8 +24,8 @@ func GetAPI() *FPLAPI {
 		Bootstrap:      "https://fantasy.premierleague.com/api/bootstrap-static/",
 		Fixtures:       "https://fantasy.premierleague.com/api/fixtures/",
 		Element:        "https://fantasy.premierleague.com/api/element-summary/{element_id}/",
-		LeagueClassic:  "https://fantasy.premierleague.com/api/leagues-classic/{league_id}/standings/",
-		LeagueH2H:      "https://fantasy.premierleague.com/api/leagues-h2h/{league_id}/standings/",
+		ClassicLeague:  "https://fantasy.premierleague.com/api/leagues-classic/{league_id}/standings/",
+		H2HLeague:      "https://fantasy.premierleague.com/api/leagues-h2h/{league_id}/standings/",
 		Entry:          "https://fantasy.premierleague.com/api/entry/{entry_id}/",
 		EntryHistory:   "https://fantasy.premierleague.com/api/entry/{entry_id}/history/",
 		EntryGameweek:  "https://fantasy.premierleague.com/api/entry/{entry_id}/event/{event_id}/picks/",
@@ -63,12 +63,12 @@ func GetElementAPI(elementID int) string {
 	return str.Replace(GetAPI().Element, ELEMENT_ID, strc.Itoa(elementID), 1)
 }
 
-func GetLeagueClassicAPI(leagueID int) string {
-	return str.Replace(GetAPI().LeagueClassic, LEAGUE_ID, strc.Itoa(leagueID), 1)
+func GetClassicLeagueAPI(leagueID int) string {
+	return str.Replace(GetAPI().ClassicLeague, LEAGUE_ID, strc.Itoa(leagueID), 1)
 }
 
-func GetLeagueH2HAPI(leagueID int) string {
-	return str.Replace(GetAPI().LeagueH2H, LEAGUE_ID, strc.Itoa(leagueID), 1)
+func GetH2HLeagueAPI(leagueID int) string {
+	return str.Replace(GetAPI().H2HLeague, LEAGUE_ID, strc.Itoa(leagueID), 1)
 }
 
 func GetGameWeekAPI(eventID int) string {

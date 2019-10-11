@@ -134,6 +134,7 @@ func GetAllEntryPicks(entryID int) ([]models.EntryPicks, models.EntryPicksMap, e
 	etm := models.EntryPicksMap{}
 	etm.EntryEventPicks = map[string]models.EntryPicks{}
 
+	// could move to goroutines - would then need to sort
 	for i := 1; i <= maxEvent; i++ {
 		ep, e := GetEntryPicks(entryID, i)
 		if e != nil {

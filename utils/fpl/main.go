@@ -12,7 +12,6 @@ var Events *models.Events
 var Phases *models.Phases
 
 func init() {
-	// check if refresh is needed
 	LoadFromLive()
 }
 
@@ -33,30 +32,6 @@ func LoadFromCache() {
 	PlayerTypes, _ = models.NewPlayerTypesFromByteArray(b)
 	Events, _ = models.NewEventsFromBootStrapByteArray(b)
 	Phases, _ = models.NewPhasesFromByteArray(b)
-
-	//Teams := models.NewFPLTeams(t)
-
-	// ts := []models.FPLTeam{}
-
-	// var result map[string]interface{}
-	// json.Unmarshal([]byte(b), &result)
-
-	// teams := result["teams"].([]interface{})
-
-	// for _, v := range teams {
-
-	// 	//t, ok := v.(models.FPLTeam) // check interface against type
-	// 	// if !ok {
-	// 	// 	println("Not ok")
-	// 	// 	log.Println(v)
-	// 	// }
-	// 	var team models.FPLTeam
-	// 	mapstructure.Decode(v, &team)
-	// 	ts = append(ts, team)
-	// 	//log.Println(team)
-	// }
-
-	// Teams = models.NewFPLTeams(ts)
 
 }
 

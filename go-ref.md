@@ -103,14 +103,17 @@ https://stackoverflow.com/questions/22343083/json-unmarshaling-with-long-numbers
 
 https://yourbasic.org/golang/json-example/
 
-
 ## Best Practices
 
 https://github.com/golang-standards/project-layout
 
 https://github.com/tmrts/go-patterns
 
+## Building an API walkthough
 
+Learning Cloud Native Go
+
+https://medium.com/learning-cloud-native-go/lets-get-it-started-dc4634ef03b
 
 
 server {

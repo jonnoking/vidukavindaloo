@@ -38,26 +38,6 @@ type EntryLeagues struct {
 	H2HLeagues     []H2HLeague     `json:"h2h_leagues"`
 }
 
-// ClassicLeague tbc
-type ClassicLeague struct {
-	ID             int    `json:"id"`
-	Name           string `json:"name"`
-	ShortName      string `json:"short_name"`
-	Created        string `json:"created"`
-	Closed         bool   `json:"closed"`
-	Rank           int    `json:"rank"`
-	MaxEntries     bool   `json:"max_entries"`
-	LeagueType     string `json:"league_type"`
-	Scoring        string `json:"scoring"`
-	AdminEntry     bool   `json:"admin_entry"`
-	StartEvent     int    `json:"start_event"`
-	EntryRank      int    `json:"entry_rank"`
-	EntryLastRank  int    `json:"entry_last_rank"`
-	EntryCanLeave  bool   `json:"entry_can_leave"`
-	EntryCanAdmin  bool   `json:"entry_can_admin"`
-	EntryCanInvite bool   `json:"entry_can_invite"`
-}
-
 // H2HLeague tbc
 type H2HLeague struct {
 }

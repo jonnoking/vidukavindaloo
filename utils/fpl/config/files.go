@@ -35,3 +35,7 @@ func GetEntryGameWeekAllFilename(entryID int) string {
 func GetMyTeamFilename(entryID int) string {
 	return fmt.Sprintf("%s/%d-my-team.json", FOLDER, entryID)
 }
+
+func GetClassicLeagueFilename(leagueID int) string {
+	return fmt.Sprintf("%s/%d-my-league-classic.json", FOLDER, leagueID)
+}

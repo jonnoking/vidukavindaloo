@@ -5,6 +5,7 @@ import (
 	"crypto/tls"
 	"fmt"
 	api "github.com/jonnoking/vidukavindaloo/utils/fpl/api"
+	"github.com/jonnoking/vidukavindaloo/utils/fpl/models"
 
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
@@ -31,6 +32,83 @@ func init() {
 	}
 }
 
+var VVLeague map[int]*models.Entry = map[int]*models.Entry{}
+
+func getEntry(entryID int, total int, rank int, wg *sync.WaitGroup) {
+	e, err := api.GetEntry(entryID)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("%d %s\n", total, e.Name)
+	VVLeague[entryID] = e
+
+	wg.Done()
+}
+
+func GetLeagueParticipantsAysnc() {
+	// Get the entries of a league using goroutines
+	league, lErr := api.GetClassicLeague(1132753)
+	if lErr != nil {
+		panic(lErr)
+	}
+
+	var wg sync.WaitGroup
+	wg.Add(len(league.Standings.Results))
+
+	for _, e := range league.Standings.Results {
+		go getEntry(e.Entry, e.Total, e.Rank, &wg)
+
+	}
+	wg.Wait()
+
+	fmt.Println("Finished getting league participants")
+	fmt.Printf("%s\n", VVLeague[4764698].PlayerFirstName)
+}
+
+type CR struct {
+	EntryID int
+	Entry   *models.Entry
+}
+
+func GetLeaguesChannels() {
+
+	entries := make(chan CR)
+
+	league, lErr := api.GetClassicLeague(1132753)
+	if lErr != nil {
+		panic(lErr)
+	}
+
+	var wg sync.WaitGroup
+	wg.Add(len(league.Standings.Results))
+
+	for _, e := range league.Standings.Results {
+
+		go func(entryID int) {
+			defer wg.Done()
+			e, err := api.GetEntry(entryID)
+			if err != nil {
+				panic(err)
+			}
+			entries <- CR{EntryID: entryID, Entry: e}
+		}(e.Entry)
+
+	}
+
+	go func() {
+		for entryResponse := range entries {
+			VVLeague[entryResponse.EntryID] = entryResponse.Entry
+			fmt.Printf("Entry: %s\n", entryResponse.Entry.Name)
+		}
+	}()
+
+	wg.Wait()
+
+	fmt.Println("Finished getting league participants")
+	fmt.Printf("%s\n", VVLeague[4764698].PlayerFirstName)
+
+}
+
 func main() {
 
 	fpl.LoadFromLive()
@@ -41,6 +119,12 @@ func main() {
 	ef, _ := api.GetCompleteEntry(1759299)
 	fmt.Printf("Leagues: %d\n", len(ef.Leagues))
 	fmt.Println(ef)
+
+	//	GetLeagueParticipantsAysnc()
+	GetLeaguesChannels()
+
+	// var input string
+	// fmt.Scanln(&input)
 
 	// t, _ := fpl.Teams.GetTeamByName("Southampton")
 	// log.Println(t)
