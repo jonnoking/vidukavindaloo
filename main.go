@@ -115,20 +115,55 @@ func main() {
 
 	fplConfig := config.New(conf.FPLLogin.User, conf.FPLLogin.Password, 8, "", "", "")
 	FPL = fpl.New(fplConfig)
-	FPL.LoadBoostrapLive()
+	//FPL.LoadBoostrapLive()
+	FPL.LoadBootstrapCache()
 
-	//masonMount := FPL.Bootstrap.Players.PlayersByID[463]
-	masonMount, _ := FPL.Bootstrap.Players.GetPlayerByFullName("Mason Mount")
+	//masonMount := FPL.Bootstrap.Players.PlayersByID[33]
+	//masonMount, _ := FPL.Bootstrap.Players.GetPlayerByFullName("Mason Mount")
+	//	fmt.Println(masonMount.GetTeam(FPL.Bootstrap.Teams).Name)
+	//	fmt.Println(masonMount.GetPlayerType(FPL.Bootstrap.PlayerTypes).SingularName)
 	//chelsea, _ := FPL.Bootstrap.Teams.GetTeamByCode(masonMount.TeamCode)
-	fmt.Println(masonMount.GetFullName() + " " + masonMount.GetPhotoURL() + " " + masonMount.GetShirtLarge())
+	//fmt.Println(masonMount.GetFullName() + " " + masonMount.GetPhotoURL() + " " + masonMount.GetShirtLarge())
 
-	entry, _ := FPL.API.GetEntry(4719576)
-	fmt.Printf("Leagues: %d\n", len(entry.Leagues))
-	fmt.Println(entry.Name)
+	// Get a Teams squad
 
-	ef, _ := FPL.API.GetCompleteEntry(1759299)
-	fmt.Printf("Leagues: %d\n", len(ef.Leagues))
-	fmt.Println(ef)
+	squad := FPL.Bootstrap.Teams.GetTeamByName("Chelsea").GetTeam(FPL.Bootstrap.Players)
+
+	for _, s := range squad {
+		fmt.Printf("%s (%s)\n", s.GetFullName(), s.GetPlayerType(FPL.Bootstrap.PlayerTypes).SingularName)
+	}
+
+	g, d, m, f := FPL.Bootstrap.Teams.GetTeamByName("Chelsea").GetSquad(FPL.Bootstrap.Players)
+
+	fmt.Println("### Goalkeepers ###")
+	for _, gk := range g {
+		fmt.Println(gk.GetFullName())
+	}
+
+	fmt.Println("### Defenders ###")
+	for _, df := range d {
+		fmt.Println(df.GetFullName())
+	}
+
+	fmt.Println("### Midfielders ###")
+	for _, mf := range m {
+		fmt.Println(mf.GetFullName())
+	}
+
+	fmt.Println("### Forwards ###")
+	for _, ff := range f {
+		fmt.Println(ff.GetFullName())
+	}
+
+	// entry, _ := FPL.API.GetEntry(4719576)
+	// fmt.Printf("Leagues: %d\n", len(entry.Leagues))
+	// fmt.Println(entry.Name)
+
+	// ef, _ := FPL.API.GetCompleteEntry(1759299)
+	// fmt.Printf("Leagues: %d\n", len(ef.Leagues))
+	// fmt.Println(ef)
+
+	//FPL.GetScreenshot("", "")
 
 	//	GetLeagueParticipantsAysnc()
 	//GetLeaguesChannels()
@@ -169,8 +204,6 @@ func main() {
 	// wn := fpl.Players.Players[168399]
 	// //168399
 	// log.Println(fmt.Sprintf("%+v", wn))
-
-	//fpl.GetScreenshot()
 
 	//runServer()
 

@@ -2,6 +2,7 @@ package models
 
 import (
 	"fmt"
+	"log"
 	s "strings"
 )
 
@@ -21,15 +22,16 @@ func (p *Teams) New(teams []Team) {
 }
 
 // GetTeamByName Returns a team details via a team name
-func (p *Teams) GetTeamByName(name string) (Team, error) {
+func (p *Teams) GetTeamByName(name string) *Team {
 	var ret Team
 
 	for _, team := range p.Teams {
 		if s.ToLower(team.Name) == s.ToLower(name) {
-			return team, nil
+			return &team
 		}
 	}
-	return ret, fmt.Errorf("No team called %s found", name)
+	log.Panicf("No team called %s found", name)
+	return &ret
 }
 
 // GetTeamByCode Returns a team details via a team code
@@ -81,6 +83,47 @@ func (p *Team) GetShirtMedium() string {
 // GetShirtLarge returns url to large verion of the team shirt image
 func (p *Team) GetShirtLarge() string {
 	return fmt.Sprintf("https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_%d-220.png", p.Code)
+}
+
+func (t *Team) GetTeam(players *Players) map[int]Player {
+	var squad = make(map[int]Player)
+
+	for _, player := range players.Players {
+		if player.TeamCode == t.Code {
+			squad[player.Code] = player
+		}
+	}
+	return squad
+}
+
+func (t *Team) GetSquad(players *Players) (goalkeepers, defenders, midfielders, forwards map[int]Player) {
+
+	goalkeepers = make(map[int]Player)
+	defenders = make(map[int]Player)
+	midfielders = make(map[int]Player)
+	forwards = make(map[int]Player)
+
+	for _, player := range players.Players {
+		if player.TeamCode == t.Code {
+			// Goalkeepers
+			if player.PlayerTypeID == 1 {
+				goalkeepers[player.Code] = player
+			}
+			// Defenders
+			if player.PlayerTypeID == 2 {
+				defenders[player.Code] = player
+			}
+			// Midfielders
+			if player.PlayerTypeID == 3 {
+				midfielders[player.Code] = player
+			}
+			// Forwards
+			if player.PlayerTypeID == 4 {
+				forwards[player.Code] = player
+			}
+		}
+	}
+	return
 }
 
 //https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_8-220.png

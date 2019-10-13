@@ -53,12 +53,12 @@ func (api *FPL) GetScreenshot(url string, element string) {
 	log.Println("STARTING: chromedp")
 	// capture screenshot of an element
 	var buf []byte
-	if err := chromedp.Run(ctx, elementScreenshot(`https://fantasy.premierleague.com/entry/4719576/event/3`, `div.Pitch-sc-1mctasb-0.kppgUD`, &buf)); err != nil {
-		log.Fatal(err)
-	}
-	if err := ioutil.WriteFile("elementScreenshot.png", buf, 0644); err != nil {
-		log.Fatal(err)
-	}
+	// if err := chromedp.Run(ctx, elementScreenshot(`https://fantasy.premierleague.com/entry/4719576/event/3`, `div.Pitch-sc-1mctasb-0.kppgUD`, &buf)); err != nil {
+	// 	log.Fatal(err)
+	// }
+	// if err := ioutil.WriteFile("elementScreenshot.png", buf, 0644); err != nil {
+	// 	log.Fatal(err)
+	// }
 
 	// capture entire browser viewport, returning png with quality=90
 	if err := chromedp.Run(ctx, fullScreenshot(`https://fantasy.premierleague.com/entry/4719576/event/1`, 100, &buf)); err != nil {

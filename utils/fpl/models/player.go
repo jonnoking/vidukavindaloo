@@ -25,16 +25,15 @@ func (p *Players) GetPlayerByFullName(fullname string) (Player, error) {
 
 // Player FPL player
 type Player struct {
-	ChanceOfPlayingNextRound int `json:"chance_of_playing_next_round"`
-	ChanceOfPlayingThisRound int `json:"chance_of_playing_this_round"`
-	Code                     int `json:"code"`
-	CostChangeEvent          int `json:"cost_change_event"`
-	CostChnageFall           int `json:"cost_change_event_fall"`
-	CostChangeStart          int `json:"cost_change_start"`
-	CostChangeStartFall      int `json:"cost_change_start_fall"`
-	DreamPlayerCount         int `json:"dreamplayer_count"`
-	PlayerTypeID             int `json:"element_type"`
-	PlayerType               PlayerType
+	ChanceOfPlayingNextRound int     `json:"chance_of_playing_next_round"`
+	ChanceOfPlayingThisRound int     `json:"chance_of_playing_this_round"`
+	Code                     int     `json:"code"`
+	CostChangeEvent          int     `json:"cost_change_event"`
+	CostChnageFall           int     `json:"cost_change_event_fall"`
+	CostChangeStart          int     `json:"cost_change_start"`
+	CostChangeStartFall      int     `json:"cost_change_start_fall"`
+	DreamPlayerCount         int     `json:"dreamplayer_count"`
+	PlayerTypeID             int     `json:"element_type"`
 	EPNext                   float64 `json:"ep_next"` //float64
 	EPThis                   float64 `json:"ep_this"` //float64
 	EventPoints              int     `json:"event_points"`
@@ -54,7 +53,6 @@ type Player struct {
 	Status                   string  `json:"status"`
 	TeamID                   int     `json:"team"`
 	TeamCode                 int     `json:"team_code"`
-	Team                     Team
 	TotalPoints              int     `json:"total_points"`
 	TransfersIn              int     `json:"transfers_in"`
 	TransfersInEvent         int     `json:"transfers_in_event"`
@@ -105,4 +103,14 @@ func (p *Player) GetShirtMedium() string {
 // GetShirtLarge returns url to large verion of the team shirt image
 func (p *Player) GetShirtLarge() string {
 	return fmt.Sprintf("https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_%d-220.png", p.TeamCode)
+}
+
+func (p *Player) GetTeam(teams *Teams) *Team {
+	t := teams.TeamsByCode[p.TeamCode]
+	return &t
+}
+
+func (p *Player) GetPlayerType(types *PlayerTypes) *PlayerType {
+	t := types.Positions[p.PlayerTypeID]
+	return &t
 }

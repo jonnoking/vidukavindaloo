@@ -7,6 +7,12 @@ import (
 	"github.com/jonnoking/vidukavindaloo/utils/fpl/models"
 )
 
+var players *models.Players
+var teams *models.Teams
+var playerTypes *models.PlayerTypes
+var events *models.Events
+var phases *models.Phases
+
 type FPL struct {
 	Config    *config.FPLConfig
 	Bootstrap *Bootstrap
@@ -33,11 +39,11 @@ func New(config *config.FPLConfig) *FPL {
 
 func (f *FPL) LoadBoostrapLive() {
 
-	var players *models.Players
-	var teams *models.Teams
-	var playerTypes *models.PlayerTypes
-	var events *models.Events
-	var phases *models.Phases
+	// var players *models.Players
+	// var teams *models.Teams
+	// var playerTypes *models.PlayerTypes
+	// var events *models.Events
+	// var phases *models.Phases
 
 	bs := f.API.RefreshBootstrap()
 	events, _ = models.NewEventsFromBootStrapMap(bs)
@@ -56,12 +62,6 @@ func (f *FPL) LoadBoostrapLive() {
 }
 
 func (f *FPL) LoadBootstrapCache() {
-
-	var players *models.Players
-	var teams *models.Teams
-	var playerTypes *models.PlayerTypes
-	var events *models.Events
-	var phases *models.Phases
 
 	b, _ := f.API.LoadBootsrapFromCache()
 	events, _ = models.NewEventsFromBootStrapByteArray(b)
@@ -133,3 +133,8 @@ func (f *FPL) CacheAllPlayerShirts() error {
 func (f *FPL) GetFPLImage(url string) ([]byte, error) {
 	return f.API.ExecuteFPLGet(url)
 }
+
+// func (f *FPL) GetTeamFromBootstrap(code int) *models.Team {
+// 	t := f.Bootstrap.Teams.TeamsByCode[code]
+// 	return &t
+// }
