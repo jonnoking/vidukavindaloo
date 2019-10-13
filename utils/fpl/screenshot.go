@@ -32,7 +32,7 @@ import (
 // EXPOSE 3000
 // ENTRYPOINT [ "myapp", "-param1=" ]
 
-func GetScreenshot() {
+func (api *FPL) GetScreenshot(url string, element string) {
 	// create context
 
 	opts := []chromedp.ExecAllocatorOption{

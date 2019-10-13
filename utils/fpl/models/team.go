@@ -7,7 +7,8 @@ import (
 
 // Teams represents all teams in the FPL
 type Teams struct {
-	Teams map[int]Team `json:"teams"`
+	TeamsByCode map[int]Team `json:"teams"`
+	Teams       []Team
 }
 
 // New Create a new team
@@ -16,7 +17,7 @@ func (p *Teams) New(teams []Team) {
 	for _, team := range teams {
 		ts[team.Code] = team
 	}
-	p.Teams = ts
+	p.TeamsByCode = ts
 }
 
 // GetTeamByName Returns a team details via a team name
@@ -35,7 +36,7 @@ func (p *Teams) GetTeamByName(name string) (Team, error) {
 func (p *Teams) GetTeamByCode(code int) (Team, error) {
 	var ret Team
 
-	team, found := p.Teams[code]
+	team, found := p.TeamsByCode[code]
 	if !found {
 		return ret, fmt.Errorf("No team found with code %d", code)
 	}
@@ -69,15 +70,17 @@ type Team struct {
 
 // GetShirtSmall returns url to small verion of the team shirt image
 func (p *Team) GetShirtSmall() string {
-	return fmt.Sprintf("https://fantasy.premierleague.com/dist/image/shirts/shirt_%d-66.png", p.Code)
+	return fmt.Sprintf("https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_%d-66.png", p.Code)
 }
 
 // GetShirtMedium returns url to medium verion of the team shirt image
 func (p *Team) GetShirtMedium() string {
-	return fmt.Sprintf("https://fantasy.premierleague.com/dist/image/shirts/shirt_%d-110.png", p.Code)
+	return fmt.Sprintf("https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_%d-110.png", p.Code)
 }
 
 // GetShirtLarge returns url to large verion of the team shirt image
 func (p *Team) GetShirtLarge() string {
-	return fmt.Sprintf("https://fantasy.premierleague.com/dist/image/shirts/shirt_%d-220.png", p.Code)
+	return fmt.Sprintf("https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_%d-220.png", p.Code)
 }
+
+//https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_8-220.png

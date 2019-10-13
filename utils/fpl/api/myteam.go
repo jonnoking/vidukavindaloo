@@ -2,21 +2,15 @@ package api
 
 import (
 	"encoding/json"
-	//"fmt"
-	"github.com/jonnoking/vidukavindaloo/utils/fpl/config"
+	"github.com/jonnoking/vidukavindaloo/utils/fpl/models"
 	"io/ioutil"
 	"log"
-	// "net/http"
-	// "time"
-
-	"github.com/jonnoking/vidukavindaloo/utils/cache"
-	"github.com/jonnoking/vidukavindaloo/utils/fpl/models"
 )
 
-func GetMyTeamFromCache(entryID int, players *models.Players, teams *models.Teams, playerTypes *models.PlayerTypes) (*models.MyTeam, error) {
+func (api *API) GetMyTeamFromCache(entryID int, players *models.Players, teams *models.Teams, playerTypes *models.PlayerTypes) (*models.MyTeam, error) {
 
 	// add teamID to file name
-	f, err := ioutil.ReadFile(config.GetMyTeamAPI(entryID))
+	f, err := ioutil.ReadFile(api.Config.API.GetMyTeamAPI(entryID))
 	if err != nil {
 		return nil, err
 	}
@@ -28,7 +22,7 @@ func GetMyTeamFromCache(entryID int, players *models.Players, teams *models.Team
 }
 
 //GetMyTeam retrive my team from FPL
-func GetMyTeam(entryID int) (*models.MyTeam, error) {
+func (api *API) GetMyTeam(entryID int) (*models.MyTeam, error) {
 
 	var myteam models.MyTeam
 	// apiURL := fmt.Sprintf("https://fantasy.premierleague.com/api/my-team/%d/", teamID)
@@ -53,7 +47,7 @@ func GetMyTeam(entryID int) (*models.MyTeam, error) {
 	// 	log.Fatal(readErr)
 	// }
 
-	byteValue, readErr := ExecuteFPLGet(config.GetMyTeamFilename(entryID))
+	byteValue, readErr := api.ExecuteFPLGet(api.Config.Files.GetMyTeamFilename(entryID))
 	if readErr != nil {
 		log.Fatal(readErr)
 	}
@@ -61,7 +55,7 @@ func GetMyTeam(entryID int) (*models.MyTeam, error) {
 	myteam = models.MyTeam{}
 	json.Unmarshal([]byte(byteValue), &myteam)
 
-	cache.SaveByteArrayToFile(byteValue, config.GetMyTeamFilename(entryID))
+	api.Config.Files.SaveByteArrayToFile(byteValue, api.Config.Files.GetMyTeamFilename(entryID))
 
 	return &myteam, nil
 }

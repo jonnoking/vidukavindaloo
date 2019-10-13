@@ -2,38 +2,31 @@ package api
 
 import (
 	"encoding/json"
-	"github.com/jonnoking/vidukavindaloo/utils/cache"
-	"github.com/jonnoking/vidukavindaloo/utils/fpl/config"
 	"io/ioutil"
 	"log"
 	// "net/http"
 	// "time"
 )
 
-func LoadBootsrapFromCache() ([]byte, error) {
-	f, err := ioutil.ReadFile("./fpl-bootstrap.json")
+func (api *API) LoadBootsrapFromCache() ([]byte, error) {
+	f, err := ioutil.ReadFile(api.Config.Files.GetBootstrapFilename())
 	if err != nil {
 		return nil, err
 	}
 	return f, nil
 }
 
-func RefreshBootstrap() map[string]interface{} {
+func (api *API) RefreshBootstrap() map[string]interface{} {
 
-	byteValue, readErr := ExecuteFPLGet(config.GetBoostrapAPI())
+	byteValue, readErr := api.ExecuteFPLGet(api.Config.API.GetBoostrapAPI())
 	if readErr != nil {
 		log.Fatal(readErr)
 	}
 
-	cache.SaveByteArrayToFile(byteValue, config.GetBootstrapFilename())
-
-	// fErr := ioutil.WriteFile("./fpl-bootstrap.json", byteValue, 0644)
-	// check(fErr)
+	api.Config.Files.SaveByteArrayToFile(byteValue, api.Config.Files.GetBootstrapFilename())
 
 	var result map[string]interface{}
 	json.Unmarshal([]byte(byteValue), &result)
-
-	//
 
 	return result
 }

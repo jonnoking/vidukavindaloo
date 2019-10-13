@@ -13,7 +13,8 @@ func NewTeams(teams []Team) (*Teams, error) {
 	}
 
 	t := new(Teams)
-	t.Teams = ts
+	t.TeamsByCode = ts
+	t.Teams = teams
 
 	return t, nil
 }

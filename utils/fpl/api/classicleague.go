@@ -2,17 +2,15 @@ package api
 
 import (
 	"encoding/json"
-	"github.com/jonnoking/vidukavindaloo/utils/cache"
-	"github.com/jonnoking/vidukavindaloo/utils/fpl/config"
 	"github.com/jonnoking/vidukavindaloo/utils/fpl/models"
 	//	"io/ioutil"
 	"log"
 )
 
-func GetClassicLeague(leagueID int) (*models.ClassicLeague, error) {
+func (api *API) GetClassicLeague(leagueID int) (*models.ClassicLeague, error) {
 	var league models.ClassicLeague
 
-	byteValue, readErr := ExecuteFPLGet(config.GetClassicLeagueAPI(leagueID))
+	byteValue, readErr := api.ExecuteFPLGet(api.Config.API.GetClassicLeagueAPI(leagueID))
 	if readErr != nil {
 		log.Fatal(readErr)
 	}
@@ -20,7 +18,7 @@ func GetClassicLeague(leagueID int) (*models.ClassicLeague, error) {
 	league = models.ClassicLeague{}
 	json.Unmarshal([]byte(byteValue), &league)
 
-	cache.SaveByteArrayToFile(byteValue, config.GetClassicLeagueFilename(leagueID))
+	api.Config.Files.SaveByteArrayToFile(byteValue, api.Config.Files.GetClassicLeagueFilename(leagueID))
 
 	return &league, nil
 }

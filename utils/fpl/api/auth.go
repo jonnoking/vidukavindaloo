@@ -3,7 +3,6 @@ package api
 import (
 	"encoding/json"
 	"errors"
-	"github.com/jonnoking/vidukavindaloo/utils/config"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -29,18 +28,18 @@ type FPLCookie struct {
 }
 
 // BuildFPLRequest build a request object with current auth cookies populated
-func BuildFPLRequest(apiURL string, method string) (*http.Request, error) {
+func (api *API) BuildFPLRequest(apiURL string, method string) (*http.Request, error) {
 
 	var fplCookies map[string]FPLCookie
 
 	r, _ := http.NewRequest(method, apiURL, nil)
 
-	cookies, err := ReadCookieCache()
-	isValid, vErr := ValidateCookies(cookies)
+	cookies, err := api.readCookieCache()
+	isValid, vErr := api.validateCookies(cookies)
 
 	if err != nil || vErr != nil || !isValid {
-		cookies, rcErr := RefreshCookies()
-		CacheCookies(cookies)
+		cookies, rcErr := api.refreshCookies()
+		api.cacheCookies(cookies)
 		fplCookies = cookies
 		if rcErr != nil {
 			return nil, rcErr
@@ -67,19 +66,19 @@ func BuildFPLRequest(apiURL string, method string) (*http.Request, error) {
 }
 
 // RefreshCookies get auth cooies from FPL
-func RefreshCookies() (map[string]FPLCookie, error) {
+func (api *API) refreshCookies() (map[string]FPLCookie, error) {
 
-	cfg := config.New()
+	//cfg := config.New()
 
 	fplCookies := make(map[string]FPLCookie)
 
 	loginURL := "https://users.premierleague.com/accounts/login/"
 
 	data := url.Values{}
-	data.Set("password", cfg.FPLLogin.Password)
-	data.Set("login", cfg.FPLLogin.User)
-	data.Set("redirect_uri", cfg.FPLLogin.RedirectURI)
-	data.Set("app", cfg.FPLLogin.App)
+	data.Set("password", api.Config.Login.Password)
+	data.Set("login", api.Config.Login.User)
+	data.Set("redirect_uri", api.Config.Login.RedirectURI)
+	data.Set("app", api.Config.Login.App)
 
 	u, _ := url.ParseRequestURI(loginURL)
 	log.Println("URL: ", data.Encode())
@@ -129,7 +128,7 @@ func RefreshCookies() (map[string]FPLCookie, error) {
 
 // CacheCookies saves FPL auth cookies to file
 // should read from global vars
-func CacheCookies(cookies map[string]FPLCookie) error {
+func (api *API) cacheCookies(cookies map[string]FPLCookie) error {
 
 	file, fErr := json.MarshalIndent(cookies, "", "")
 	if fErr != nil {
@@ -144,7 +143,7 @@ func CacheCookies(cookies map[string]FPLCookie) error {
 }
 
 // ReadCookieCache reads the cookies from file and into memory
-func ReadCookieCache() (map[string]FPLCookie, error) {
+func (api *API) readCookieCache() (map[string]FPLCookie, error) {
 	c := map[string]FPLCookie{}
 	cookies, err := ioutil.ReadFile("./fpl-auth-cache.json")
 	if err != nil {
@@ -157,7 +156,7 @@ func ReadCookieCache() (map[string]FPLCookie, error) {
 }
 
 // ValidateCookies verifies that pl_profile or sessionid expiry date has not passed
-func ValidateCookies(cookies map[string]FPLCookie) (bool, error) {
+func (api *API) validateCookies(cookies map[string]FPLCookie) (bool, error) {
 
 	now := time.Now()
 

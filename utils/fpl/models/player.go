@@ -91,3 +91,18 @@ func (p *Player) GetFullName() string {
 func (p *Player) GetPhotoURL() string {
 	return fmt.Sprintf("https://platform-static-files.s3.amazonaws.com/premierleague/photos/players/110x140/p%d.png", p.Code)
 }
+
+// GetShirtSmall returns url to small verion of the team shirt image
+func (p *Player) GetShirtSmall() string {
+	return fmt.Sprintf("https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_%d-66.png", p.TeamCode)
+}
+
+// GetShirtMedium returns url to medium verion of the team shirt image
+func (p *Player) GetShirtMedium() string {
+	return fmt.Sprintf("https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_%d-110.png", p.TeamCode)
+}
+
+// GetShirtLarge returns url to large verion of the team shirt image
+func (p *Player) GetShirtLarge() string {
+	return fmt.Sprintf("https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_%d-220.png", p.TeamCode)
+}

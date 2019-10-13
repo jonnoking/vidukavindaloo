@@ -6,26 +6,19 @@ import (
 	"strings"
 )
 
-type Config struct {
-	HTTP      HTTPConfig
-	FPL       FPLConfig
-	FPLLogin  FPLLogin
-	DebugMode bool
-	UserRoles []string
-	MaxUsers  int
-}
-
-// FPLConfig Fantasy Premier League Config
-type FPLConfig struct {
-	Me       int
-	VVLeague int
-}
-
 type FPLLogin struct {
 	User        string
 	Password    string
 	RedirectURI string
 	App         string
+}
+
+type Config struct {
+	HTTP      HTTPConfig
+	FPLLogin  FPLLogin
+	DebugMode bool
+	UserRoles []string
+	MaxUsers  int
 }
 
 // HTTPConfig http/s defaults
@@ -49,10 +42,6 @@ func New() *Config {
 			HTTPPort:     getEnvAsInt("HTTP_PORT", 8111),
 			HTTPSDomains: getEnvAsSlice("HTTPS_DOMAINS", []string{""}, ","),
 			HTTPSPort:    getEnvAsInt("HTTPS_PORT", 443),
-		},
-		FPL: FPLConfig{
-			Me:       getEnvAsInt("FPL_ME", -1),
-			VVLeague: getEnvAsInt("FPL_VV_LEAGUE", -1),
 		},
 		FPLLogin: FPLLogin{
 			User:        getEnv("FPL_USER", "jonno.king@gmail.com"),

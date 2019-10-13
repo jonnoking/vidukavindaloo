@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func ExecuteFPLGet(url string) ([]byte, error) {
+func (api *API) ExecuteFPLGet(url string) ([]byte, error) {
 
 	apiURL := url
 
@@ -15,7 +15,7 @@ func ExecuteFPLGet(url string) ([]byte, error) {
 		Timeout: time.Second * 5,
 	}
 
-	r, _ := BuildFPLRequest(apiURL, "GET")
+	r, _ := api.BuildFPLRequest(apiURL, "GET")
 
 	resp, respErr := client.Do(r)
 	if respErr != nil {

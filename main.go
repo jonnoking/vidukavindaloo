@@ -4,15 +4,12 @@ import (
 	"context"
 	"crypto/tls"
 	"fmt"
-	api "github.com/jonnoking/vidukavindaloo/utils/fpl/api"
-	"github.com/jonnoking/vidukavindaloo/utils/fpl/models"
-
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
-	"github.com/jonnoking/vidukavindaloo/utils/config"
+	cfg "github.com/jonnoking/vidukavindaloo/utils/config"
 	"github.com/jonnoking/vidukavindaloo/utils/fpl"
-
-	//"./utils/config"
+	"github.com/jonnoking/vidukavindaloo/utils/fpl/config"
+	"github.com/jonnoking/vidukavindaloo/utils/fpl/models"
 	"golang.org/x/crypto/acme/autocert"
 	// "html/template"
 	"log"
@@ -23,6 +20,8 @@ import (
 	"sync"
 	"time"
 )
+
+var FPL *fpl.FPL
 
 // init is invoked before main()
 func init() {
@@ -35,7 +34,7 @@ func init() {
 var VVLeague map[int]*models.Entry = map[int]*models.Entry{}
 
 func getEntry(entryID int, total int, rank int, wg *sync.WaitGroup) {
-	e, err := api.GetEntry(entryID)
+	e, err := FPL.API.GetEntry(entryID)
 	if err != nil {
 		panic(err)
 	}
@@ -47,7 +46,7 @@ func getEntry(entryID int, total int, rank int, wg *sync.WaitGroup) {
 
 func GetLeagueParticipantsAysnc() {
 	// Get the entries of a league using goroutines
-	league, lErr := api.GetClassicLeague(1132753)
+	league, lErr := FPL.API.GetClassicLeague(1132753)
 	if lErr != nil {
 		panic(lErr)
 	}
@@ -74,7 +73,7 @@ func GetLeaguesChannels() {
 
 	entries := make(chan CR)
 
-	league, lErr := api.GetClassicLeague(1132753)
+	league, lErr := FPL.API.GetClassicLeague(1132753)
 	if lErr != nil {
 		panic(lErr)
 	}
@@ -86,7 +85,7 @@ func GetLeaguesChannels() {
 
 		go func(entryID int) {
 			defer wg.Done()
-			e, err := api.GetEntry(entryID)
+			e, err := FPL.API.GetEntry(entryID)
 			if err != nil {
 				panic(err)
 			}
@@ -112,17 +111,27 @@ func GetLeaguesChannels() {
 
 func main() {
 
-	fpl.LoadFromLive()
-	entry, _ := api.GetEntry(4719576)
+	conf := cfg.New()
+
+	fplConfig := config.New(conf.FPLLogin.User, conf.FPLLogin.Password, 8, "", "", "")
+	FPL = fpl.New(fplConfig)
+	FPL.LoadBoostrapLive()
+
+	//masonMount := FPL.Bootstrap.Players.PlayersByID[463]
+	masonMount, _ := FPL.Bootstrap.Players.GetPlayerByFullName("Mason Mount")
+	//chelsea, _ := FPL.Bootstrap.Teams.GetTeamByCode(masonMount.TeamCode)
+	fmt.Println(masonMount.GetFullName() + " " + masonMount.GetPhotoURL() + " " + masonMount.GetShirtLarge())
+
+	entry, _ := FPL.API.GetEntry(4719576)
 	fmt.Printf("Leagues: %d\n", len(entry.Leagues))
 	fmt.Println(entry.Name)
 
-	ef, _ := api.GetCompleteEntry(1759299)
+	ef, _ := FPL.API.GetCompleteEntry(1759299)
 	fmt.Printf("Leagues: %d\n", len(ef.Leagues))
 	fmt.Println(ef)
 
 	//	GetLeagueParticipantsAysnc()
-	GetLeaguesChannels()
+	//GetLeaguesChannels()
 
 	// var input string
 	// fmt.Scanln(&input)
@@ -168,7 +177,7 @@ func main() {
 }
 
 func runServer() {
-	conf := config.New()
+	conf := cfg.New()
 
 	serverConfig := HttpServerConfig{
 		Host:         conf.HTTP.HTTPHost,

@@ -3,10 +3,7 @@ package api
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/jonnoking/vidukavindaloo/utils/cache"
-	"github.com/jonnoking/vidukavindaloo/utils/fpl/config"
 	"github.com/jonnoking/vidukavindaloo/utils/fpl/models"
-	//	"io/ioutil"
 	"log"
 	"strings"
 )
@@ -27,12 +24,12 @@ func GetEntryFromCache(teamID int, players *models.Players, teams *models.Teams,
 }
 
 //GetCompleteEntry Get complete entry details
-func GetCompleteEntry(entryID int) (*models.Entry, error) {
+func (api *API) GetCompleteEntry(entryID int) (*models.Entry, error) {
 
-	entry, _ := GetEntry(entryID)
-	history, _ := GetEntryHistory(entryID)
-	transfers, _ := GetEntryTransfers(entryID)
-	_, picks, _ := GetAllEntryPicks(entryID)
+	entry, _ := api.GetEntry(entryID)
+	history, _ := api.GetEntryHistory(entryID)
+	transfers, _ := api.GetEntryTransfers(entryID)
+	_, picks, _ := api.GetAllEntryPicks(entryID)
 
 	entry.History = history
 	entry.Transfers = transfers
@@ -40,17 +37,17 @@ func GetCompleteEntry(entryID int) (*models.Entry, error) {
 
 	byteValue, _ := json.Marshal(entry)
 
-	cache.SaveByteArrayToFile(byteValue, config.GetEntryFullFilename(entryID))
+	api.Config.Files.SaveByteArrayToFile(byteValue, api.Config.Files.GetEntryFullFilename(entryID))
 
 	return entry, nil
 }
 
 //GetEntry retrive my team from FPL
-func GetEntry(entryID int) (*models.Entry, error) {
+func (api *API) GetEntry(entryID int) (*models.Entry, error) {
 
 	var entry models.Entry
 
-	byteValue, readErr := ExecuteFPLGet(config.GetEntryAPI(entryID))
+	byteValue, readErr := api.ExecuteFPLGet(api.Config.API.GetEntryAPI(entryID))
 	if readErr != nil {
 		log.Fatal(readErr)
 	}
@@ -58,17 +55,17 @@ func GetEntry(entryID int) (*models.Entry, error) {
 	entry = models.Entry{}
 	json.Unmarshal([]byte(byteValue), &entry)
 
-	cache.SaveByteArrayToFile(byteValue, config.GetEntryFilename(entryID))
+	api.Config.Files.SaveByteArrayToFile(byteValue, api.Config.Files.GetEntryFilename(entryID))
 
 	return &entry, nil
 }
 
 //GetEntryHistory retrive my team from FPL
-func GetEntryHistory(entryID int) (*models.EntryHistory, error) {
+func (api *API) GetEntryHistory(entryID int) (*models.EntryHistory, error) {
 
 	var entryHistory models.EntryHistory
 
-	byteValue, readErr := ExecuteFPLGet(config.GetEntryHistoryAPI(entryID))
+	byteValue, readErr := api.ExecuteFPLGet(api.Config.API.GetEntryHistoryAPI(entryID))
 	if readErr != nil {
 		log.Fatal(readErr)
 	}
@@ -76,18 +73,18 @@ func GetEntryHistory(entryID int) (*models.EntryHistory, error) {
 	entryHistory = models.EntryHistory{}
 	json.Unmarshal([]byte(byteValue), &entryHistory)
 
-	cache.SaveByteArrayToFile(byteValue, config.GetEntryHistoryFilename(entryID))
+	api.Config.Files.SaveByteArrayToFile(byteValue, api.Config.Files.GetEntryHistoryFilename(entryID))
 
 	return &entryHistory, nil
 }
 
 //GetEntryTransfers retrive my team from FPL
-func GetEntryTransfers(entryID int) (*models.EntryTransfers, error) {
+func (api *API) GetEntryTransfers(entryID int) (*models.EntryTransfers, error) {
 
 	var entryTransfers models.EntryTransfers
 	var t []models.Transfer
 
-	byteValue, readErr := ExecuteFPLGet(config.GetEntryTransfersAPI(entryID))
+	byteValue, readErr := api.ExecuteFPLGet(api.Config.API.GetEntryTransfersAPI(entryID))
 	if readErr != nil {
 		log.Fatal(readErr)
 	}
@@ -99,7 +96,7 @@ func GetEntryTransfers(entryID int) (*models.EntryTransfers, error) {
 
 	entryTransfers.Transfers = t
 
-	cache.SaveByteArrayToFile(byteValue, config.GetEntryTransfersFilename(entryID))
+	api.Config.Files.SaveByteArrayToFile(byteValue, api.Config.Files.GetEntryTransfersFilename(entryID))
 
 	log.Printf("Transfers 1 Length: %d\n", len(entryTransfers.Transfers))
 
@@ -107,11 +104,11 @@ func GetEntryTransfers(entryID int) (*models.EntryTransfers, error) {
 }
 
 //GetEntryPicks retrive my team from FPL
-func GetEntryPicks(entryID int, eventID int) (models.EntryPicks, error) {
+func (api *API) GetEntryPicks(entryID int, eventID int) (models.EntryPicks, error) {
 
 	var entryPicks models.EntryPicks
 
-	byteValue, readErr := ExecuteFPLGet(config.GetEntryGameweekAPI(entryID, eventID))
+	byteValue, readErr := api.ExecuteFPLGet(api.Config.API.GetEntryGameweekAPI(entryID, eventID))
 	if readErr != nil {
 		return entryPicks, readErr
 	}
@@ -119,15 +116,15 @@ func GetEntryPicks(entryID int, eventID int) (models.EntryPicks, error) {
 	entryPicks = models.EntryPicks{}
 	json.Unmarshal([]byte(byteValue), &entryPicks)
 
-	cache.SaveByteArrayToFile(byteValue, config.GetEntryGameWeekFilename(entryID, eventID))
+	api.Config.Files.SaveByteArrayToFile(byteValue, api.Config.Files.GetEntryGameWeekFilename(entryID, eventID))
 
 	return entryPicks, nil
 }
 
 //GetAllEntryPicks Get all 38 event picks
-func GetAllEntryPicks(entryID int) ([]models.EntryPicks, models.EntryPicksMap, error) {
+func (api *API) GetAllEntryPicks(entryID int) ([]models.EntryPicks, models.EntryPicksMap, error) {
 
-	maxEvent := config.MAX_EVENT_WEEK
+	maxEvent := api.Config.MaxEventWeek
 
 	eps := []models.EntryPicks{}
 
@@ -136,7 +133,7 @@ func GetAllEntryPicks(entryID int) ([]models.EntryPicks, models.EntryPicksMap, e
 
 	// could move to goroutines - would then need to sort
 	for i := 1; i <= maxEvent; i++ {
-		ep, e := GetEntryPicks(entryID, i)
+		ep, e := api.GetEntryPicks(entryID, i)
 		if e != nil {
 			// break if picks returns 404 as the event week is not active
 			if strings.Contains(e.Error(), "status code: 404") {
@@ -150,13 +147,13 @@ func GetAllEntryPicks(entryID int) ([]models.EntryPicks, models.EntryPicksMap, e
 
 	byteValue, _ := json.Marshal(eps)
 
-	cache.SaveByteArrayToFile(byteValue, config.GetEntryGameWeekAllFilename(entryID))
+	api.Config.Files.SaveByteArrayToFile(byteValue, api.Config.Files.GetEntryGameWeekAllFilename(entryID))
 
 	return eps, etm, nil
 }
 
 // CreateTransferMap Return a map from an array with event id as index
-func CreateTransferMap(transfers *models.EntryTransfers) (*models.EntryTransfersMap, error) {
+func (api *API) CreateTransferMap(transfers *models.EntryTransfers) (*models.EntryTransfersMap, error) {
 
 	etm := models.EntryTransfersMap{}
 	etm.Transfers = map[string]*models.Transfer{}
