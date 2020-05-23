@@ -115,8 +115,8 @@ func main() {
 
 	fplConfig := config.New(conf.FPLLogin.User, conf.FPLLogin.Password, 8, "", "", "")
 	FPL = fpl.New(fplConfig)
-	//FPL.LoadBoostrapLive()
-	FPL.LoadBootstrapCache()
+	FPL.LoadBoostrapLive()
+	//FPL.LoadBootstrapCache()
 
 	//masonMount := FPL.Bootstrap.Players.PlayersByID[33]
 	//masonMount, _ := FPL.Bootstrap.Players.GetPlayerByFullName("Mason Mount")
